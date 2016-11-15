@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<head>
+
+<title>Time Collection System</title>
+<link href="../images/tcs.png" rel="icon"/>
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.base.css"        rel="stylesheet"/>
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.ui-darkness.css" rel="stylesheet"/>
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.ui-sunny.css"    rel="stylesheet"/>
+
+<style>
+
+body{
+   background-color: rgb( 24, 24, 24 );
+   margin: 5px;
+}
+.jqx-grid-column-header-ui-darkness{
+   color: yellow;
+/* font-size: 13px; */
+}
+/*.jqx-grid-content-ui-darkness{
+     font-size: 13px;
+} */
+.jqx-grid-column-header-ui-sunny{
+   color: yellow;
+}
+//table{ border: 1px solid rgb(255,0,0);}
+//td{ border: 1px solid rgb(0,0,255);}
+</style>
+
+<script src="../jquery-2.1.3.min.js"></script>
+<script src="../moment.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcore.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxbuttons.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcalendar.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcheckbox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcombobox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdata.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdata.export.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdatatable.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdatetimeinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdropdownlist.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.edit.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.export.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.filter.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.grouping.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.pager.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsreorder.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.edit.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.selection.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.sort.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxlistbox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxloader.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxmaskedinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxmenu.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxnavigationbar.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxnumberinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxpanel.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxpasswordinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxresponse.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxribbon.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxscrollbar.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxtabs.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxtextarea.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxwindow.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/aggregates.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/globalization/globalize.js"></script>
+</head>
+<!--<body onload="login()" onbeforeunload="finish()">-->
+<body onbeforeunload="finish()">
+
+<!--
+********************************************************************************************************
+****************  Framework  ****************  Framework  ****************  Framework  *****************
+********************************************************************************************************
+-->
+
+<div id="appGrid"></div>
+
+<div id="loginPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/finger.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Who are you?</span>
+   </div>
+   <div><!-- Content -->
+      <div id="loginPopupDD" style="margin: 15px 10px 0px 10px;"></div>
+      <div style="margin: 15px 10px 0px 51px;"><strong>Password:</strong></div>
+      <div style="margin: 2px 10px 20px 51px;">
+         <input type="password" id="loginPopupPassword">
+      </div>
+      <div style="margin-left: 43px;">
+         <input id="loginPopupOK" type="button" value="OK" style="margin-right: 10px">
+         <input id="loginPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="addPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Select a project</span>
+   </div>
+   <div><!-- Content -->
+      <div id="addPopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 158px;">
+         <input id="addPopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="addPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="findPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/goto.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Find a project</span>
+   </div>
+   <div><!-- Content -->
+      <div id="findPopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 158px;">
+         <input id="findPopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="findPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<!--
+<div id="closeWOPopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/finished.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Close work order</span>
+   </div>
+   <div>
+      <input id="closeWOPopupProject" style="margin: 10px 10px 20px 49px;">
+      <div style="margin: 0px 0px 0px 24px;">
+         <input id="closeWOPopupOK" type="button" value="Close" style="margin-right: 10px">
+         <input id="closeWOPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+-->
+
+<div id="supervisorPopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/config.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Supervisor menu</span>
+   </div>
+   <div>
+      <div style="margin: 10px 10px 0px 10px;"><strong>Password:</strong></div>
+      <div style="margin: 5px 10px 20px 10px;">
+         <input type="password" id="supervisorPopupPassword">
+      </div>
+      <div style="margin: 10px 10px 0px 10px;"><strong>Tasks:</strong></div>
+      <div id="supervisorPopupLB" style="margin: 2px 10px 25px 10px;"></div>
+      <div style="margin-left: 50px;">
+         <input id="supervisorPopupOK" type="button" value="OK" style="margin-right: 10px">
+         <input id="supervisorPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<!--
+<div id="deletePopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/close.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Delete this record</span>
+   </div>
+   <div>
+      <div style="margin: 10px 10px 25px 10px;">
+         Clicking the <strong>Delete</strong> button will remove this <span id="deleteValue" style="color: blue; font-weight: bold;"></span> record ONLY if not referenced elsewhere. Click <strong>Cancel</strong> to abort this attempt.
+      </div>
+      <div style="margin-left: 44px;">
+         <input id="deletePopupOK" type="button" value="Delete" style="margin-right: 10px">
+         <input id="deletePopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+-->
+
+<div id="refreshPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/refresh.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Refresh the grid</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 25px 10px;">
+         The data has now been refreshed. Please click <strong>OK</strong> to continue.
+      </div>
+      <div style="margin-left: 84px;">
+         <input id="refreshPopupOK" type="button" value="OK" style="margin-right: 5px">
+      </div>
+   </div>
+</div>
+
+<div id="quitPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/stop.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Close window</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 25px 10px;">
+         Please click <strong>Quit</strong> to close this window, or click <strong>Go Back</strong> to leave it open.
+      </div>
+      <div style="margin-left: 44px;">
+         <input id="quitPopupOK" type="button" value="Quit" style="margin-right: 10px">
+         <input id="quitPopupCancel" type="button" value="Go Back">
+      </div>
+   </div>
+</div>
+
+<div id="alphaPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/clock_face.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Set starting time</span>
+   </div>
+   <div><!-- Content -->
+      <table style="font: inherit; padding: 10px 10px 10px 10px;">
+         <tr>
+            <td colspan=2 style="padding: 0px 0px 20px 0px;">
+               <strong>Project:</strong><br>
+               <span id="alphaPopupField" style="color: blue;"></span>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <img src="../images/traffic_light_grn.png" alt="">
+            </td>
+            <td style="padding: 0px 0px 0px 15px;">
+               Click <input id="alphaPopupOK" type="button" style="position: relative; top: -1px; font-size: 10px; font-weight: bold" value="here"> to set the date & time to <span style="font-style: italic;">now</span> or enter it here:
+               <div id="alphaPopupDateTime" style="margin: 8px 0px 15px 0px;"></div>
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Hours:</strong>
+               <div id="alphaPopupHour" style="float: right; position: relative; top: -5px; margin: 0px 55px 10px 0px;"></div>
+               <input id="alphaPopupSet" type="button" value="Set" style="margin-right: 10px">
+               <input id="alphaPopupCancel" type="button" value="Cancel">
+            </td>
+         </tr>
+      </table>
+   </div>
+</div>
+
+<div id="omegaPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/clock_face.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Set ending time</span>
+   </div>
+   <div><!-- Content -->
+      <table style="font: inherit; padding: 10px 10px 10px 10px;">
+         <tr>
+            <td colspan=2 style="padding: 0px 0px 20px 0px;">
+               <strong>Project:</strong><br>
+               <span id="omegaPopupField" style="color: blue;"></span>
+            </td>
+         </tr>
+         <tr>
+            <td>
+               <img src="../images/traffic_light_red.png" alt="">
+            </td>
+            <td style="padding: 0px 0px 0px 15px;">
+               Click <input id="omegaPopupOK" type="button" style="position: relative; top: -1px; font-size: 10px; font-weight: bold" value="here"> to set the date & time to <span style="font-style: italic;">now</span> or enter it here:
+               <div id="omegaPopupDateTime" style="margin: 8px 0px 10px 0px;"></div>
+               <input id="omegaPopupSet" type="button" value="Set" style="margin-right: 10px">
+               <input id="omegaPopupCancel" type="button" value="Cancel">
+            </td>
+         </tr>
+      </table>
+   </div>
+</div>
+
+<div id="employeePopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Select an employee</span>
+   </div>
+   <div><!-- Content -->
+      <div id="employeePopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 38px;">
+         <input id="employeePopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="employeePopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="projectPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Select a project</span>
+   </div>
+   <div><!-- Content -->
+      <div id="projectPopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 158px;">
+         <input id="projectPopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="projectPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="chargeLinePopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Select a charge line</span>
+   </div>
+   <div><!-- Content -->
+      <div id="chargeLinePopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 150px;">
+         <input id="chargeLinePopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="chargeLinePopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="taskPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Task</span>
+   </div>
+   <div><!-- Content -->
+      <div id="taskPopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 30px;">
+         <input id="taskPopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="taskPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="notationPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Operation notes</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 10px 10px;">
+         Change or edit notations for this record. To abort, click <strong>Cancel</strong>.
+      </div>
+      <div style="margin: 10px 10px 0px 10px;"><strong>Notes:</strong></div>
+      <div style="margin: 5px 10px 25px 10px;">
+         <textarea id="notationPopupField"></textarea>
+      </div>
+      <div style="margin-left: 221px;">
+         <input id="notationPopupOK" type="button" value="Save" style="margin-right: 10px">
+         <input id="notationPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="changePasswordPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/finger.png" alt="">
+      <span id="changePasswordPopupTitle" style="margin-left: 4px; position: relative; top: -3px;">Change password</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 15px 10px  5px 12px;"><strong>Current: </strong><input type="password" id="changePasswordPopupCurrent"></div>
+      <div style="margin:  0px 10px  5px 10px;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New: </strong><input type="password" id="changePasswordPopupNew"></div>
+      <div style="margin:  0px 10px 20px 9px;"><strong>Confirm: </strong><input type="password" id="changePasswordPopupConfirm"></div>
+      <div style="margin-left: 30px;">
+         <input id="changePasswordPopupOK" type="button" value="OK" style="margin-right: 10px">
+         <input id="changePasswordPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<!--
+<div id="closeMsgPopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Cannot close work order</span>
+   </div>
+   <div>
+      <div id="closeMsgPopupField" style="margin: 10px 10px 25px 10px;"></div>
+      <div style="margin-left: 91px;">
+         <input id="closeMsgPopupOK" type="button" value="OK" style="margin-right: 5px">
+      </div>
+   </div>
+</div>
+-->
+
+<!--
+********************************************************************************************************
+*****************  Script  *******************  Script  *******************  Script  *******************
+********************************************************************************************************
+-->
+
+<script>
+loginID = "XXXX" // "3966" // Launch as non-existent employee
+hackAway = false
+hideColumn = true
+window.name = "tcsWindow"
+browserWidth  = 1005 // Meaningless here. Will be resized
+browserHeight = 900 // Sets the height here
+//setBrowserSize( browserWidth, browserHeight )
+//sleep( 250 )
+
+activeEditRow    = -1 // Global var so various functions know which row is being edited
+activeEditColumn = "" // Global var so various functions know which column is being edited
+
+// Global vars for launching external app windows
+var employeeWindow
+var projectWindow
+var chargeLineWindow
+var taskWindow
+
+response     = new $.jqx.response() // Object to hold display size and mouse info for development.
+os           = response.os
+browser      = response.browser
+device       = response.device
+viewPort     = response.viewPort
+documentInfo = response.document
+scroll       = response.scroll
+
+
+gridTheme       = "ui-darkness"
+detailsTheme    = "ui-sunny"
+gridWidth       = viewPort.width-2 // was browserWidth - 35
+gridPageRows    = 20
+gridHeight      = viewPort.height-2 // was 240 + ( 25 * gridPageRows )
+detailsHeight   = 290 // Detail row height
+detailsBarWidth = 0 //34
+columnsWidth    = 0   // Calculated after grid is rendered or any column is resized
+//displayInformation() // Show display size info.
+//mouseInformation() // Show mouse info.
+
+/* // localStorage information
+// api
+localStorage.setItem( key, value )
+result = localStorage.getItem( key )
+localStorage.removeItem( key )
+localStorage.clear()   
+key = localStorage.key( index )
+indexes = localStorage.length
+
+// iteration
+*/
+
+// tcs localStorage example:
+// loginID = "1000"
+// loginName = "Weinpert, Joe'
+// loginPassword = "Technifab123"
+
+console.log( "localStorage:" )
+for( i = 0; i < localStorage.length; i++ ){
+   key = localStorage.key( i )
+   value = localStorage.getItem( key )
+   console.log( "   ", key, "=", value )
+}
+
+/* // Test the returned JSON array
+xmlhttp = new XMLHttpRequest()
+xmlhttp.onreadystatechange = function(){
+   if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
+      alert( xmlhttp.responseText )
+      console.log( xmlhttp.responseText )
+   }
+}
+xmlhttp.open( "GET", "tcs.php?LoginID=" + loginID + "&HackAway=" + hackAway, false )
+//xmlhttp.open( "GET", "employeeLB.php", false )
+//xmlhttp.open( "GET", "chargeLineForProjectLB.php?ProjectID=" + "TF0044", false )
+xmlhttp.send()
+*/
+
+// employeeSource gathers all employee IDs and names for a "value/label" listbox used for the DisplayName field.
+employeeSource = {
+   datatype: "json",
+   datafields: [
+      { name: "EmployeeID",  type: "string" }, // Needs to be different than "EmplID" as a field name in the grid
+      { name: "DisplayName", type: "string" }
+   ],
+   url: "employeeLB.php",
+   cache: false,
+   async: false
+}
+employeeAdapter = new $.jqx.dataAdapter( employeeSource, { autoBind: true } ) // Why is autoBind reqd?
+
+// projectSource gathers all project IDs and names for a "value/label" listbox used for the Project field.
+projectSource = {
+   datatype: "json",
+   datafields: [
+      { name: "ProjID",  type: "string" }, // Needs to be different than "ProjectID" as a field name in the grid
+      { name: "Project", type: "string" }
+   ],
+   url: "projectLB.php",
+   cache: false,
+   async: false
+}
+projectAdapter = new $.jqx.dataAdapter( projectSource, { autoBind: true } ) // Why is autoBind reqd?
+
+// projectFindSource gathers all distinct projects from the tcs table
+projectFindSource = function(){
+   source = {
+   datatype: "json",
+   datafields: [
+      { name: "ProjectID", type: "string" },
+      { name: "Project",   type: "string" }
+   ],
+      url: "projectFindLB.php",
+      cache: false,
+      async: false
+   }
+   return dataAdapter = new $.jqx.dataAdapter( source, { autoBind: true } )
+}
+
+// chargeLineForProject is for choosing them as allocated to a project.
+// It is called each time a ChargeLine field is clicked.
+chargeLineForProject = function( projectID ){
+   source = {
+      datatype: "json",
+      datafields: [
+         { name: "ChargeLine", type: "string" }
+      ],
+      url: "chargeLineForProjectLB.php?ProjectID=" + projectID,
+      cache: false,
+      async: false
+   }
+   return new $.jqx.dataAdapter( source, { uniqueDataFields: ["ChargeLine"] } ) // Not sure why uniqueDataFields is needed.
+}
+
+// taskSource gathers all tasks for a listbox used in the task field.
+taskSource = {
+   datatype: "json",
+   datafields: [
+      { name: "Task", type: "string" }
+   ],
+   url: "taskLB.php",
+   cache: false,
+   async: false
+}
+taskAdapter = new $.jqx.dataAdapter( taskSource, { autoBind: true } ) // Why is autoBind reqd?
+
+// Listbox source choices for supervisor popup window
+supervisorSource = [
+   "Edit employees database",
+   "Edit projects database",
+   "Edit charge line database",
+   "Edit tasks database"
+];
+
+// gridSource and gridAdapter objects
+// are variables for the main jqxGrid
+gridSource = {
+   datatype:  "json",
+   datafields: [
+      // name: = json array index key
+      // type: = "string", "date", "number", or "bool". Needed for best results when exporting to excel
+      { name: "JobTag",      type: "number" },
+      { name: "EmplID",      type: "string" },
+
+      // When using the value/label type LB, "name:" and "value:" here must match the
+      // grid field's "displayfield:" and "datafield:" attributes respectively as well
+      // as the #employeePopup.jqxListBox "displayMember:" and "valueMember:" attributes
+      { name: "DisplayName", type: "string" }, //value: "EmployeeID", values: { source: employeeAdapter.records, value: "EmployeeID", name: "DisplayName" } },
+
+      { name: "ProjectID",   type: "string" },
+      { name: "Project",     type: "string" },
+      { name: "ChargeLine",  type: "string" },
+      { name: "Task",        type: "string" },
+      { name: "AlphaClock",  type: "date"   },
+      { name: "OmegaClock",  type: "date"   },
+      { name: "Runtime",     type: "number" },
+      { name: "DisplayTime", type: "string" },
+      { name: "Notation",    type: "string" },
+      { name: "Closed",      type: "number" },
+      { name: "Enabled",     type: "number" },
+      { name: "Modified",    type: "date"   },
+      { name: "Created",     type: "date"   },
+      { name: "RecordID",    type: "number" }
+   ],
+   id: "RecordID",
+   url: "tcs.php?LoginID=" + loginID + "&HackAway=" + hackAway, // This call to the URL is only run for the SELECT read of data
+   cache: false,
+   async: false,
+   addrow: function( rowID, insertData, position, commit ){
+      // Only the ProjectID and Project fields
+      ajaxData  = "insert=" + true
+      ajaxData += "&"
+      ajaxData += $.param( insertData )
+      console.log( "addrow:\n  rowID:", rowID, "\n  ajaxData:", ajaxData )
+//return
+      $.ajax({
+         dataType: "json",
+         url: "tcs.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+
+            $( "#appGrid" ).jqxGrid( "updatebounddata" ) // Reload the data because of the added row
+            rows = $( "#appGrid" ).jqxGrid( "getrows" )
+            for( i = 0; i < rows.length; i++ ){
+               if( rows[i].ProjectID == insertData.ProjectID ){
+                  $( "#appGrid" ).jqxGrid( "ensurerowvisible", i )
+                  $( "#appGrid" ).jqxGrid( "selectcell", i, "ProjID" ) // "ProjID" because Project column is a value/label column
+                  break
+               }
+            }
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   },
+   deleterow: function( rowID, commit ){
+      ajaxData  = "delete=" + true
+      ajaxData += "&"
+      ajaxData += $.param( { Operation: rowID } )
+      console.log( "delete row ajaxData:", ajaxData )
+return
+      $.ajax({
+         dataType: "json",
+         url: "tcs.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+            $( "#appGrid" ).jqxGrid( "updatebounddata" )
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   },
+   updaterow: function( rowID, rowData, commit ){ // rowData is a json array like {JobTag: "1512250001", Operation: "Routing", ...}
+      console.log( "updaterow: activeEditColumn:", activeEditColumn )
+      console.dir( rowData )
+
+      // When editing a value/label LB style field the rowData value passed from the column
+      // is the grid field's "displayfield:" attribute, not the normal "datafield:" attribute.
+      // For example:
+      // Even though the database table's "DisplayName" field would normally be set as the grid
+      // column's "datafield:" attribute, the attribute is set instead as the source adapter's
+      // "value:" field "EmployeeID". The grid column will also have another attribute named
+      // "displayfield:" which needs to match the source adapter's "name:" field.
+
+      if( activeEditColumn == "EmployeeID" ){ // Employee column
+         rowData.DisplayName = "" // Set the rowData.DisplayName value here rather than having the PHP do it
+         if( rowData.EmplID > "" ){
+            x = $( "#employeePopupLB" ).jqxListBox( "getItems" ) // Get an object array of each item in the listbox
+            for( i = 0; i < x.length; i++ ){
+               if( x[i].checked ) rowData.DisplayName += x[i].label.trim() + "<br>"
+            }
+            rowData.DisplayName = rowData.DisplayName.substr( 0, rowData.DisplayName.length - 4 ) // Remove the trailing "<br>"
+         }
+      }
+
+      if( activeEditColumn == "ProjID" ){ // Project column
+         rowData.Project = ""
+         if( rowData.ProjectID > "" ){
+            rowData.Project = $( "#projectPopupLB" ).jqxListBox( "getSelectedItem" ).label
+         }
+      }
+
+      // If we are changing the AlphaClock then the OmegaClock cell must be deleted.
+      // Force a setting of the OmegaClock if the "#alphaPopupHour" value > 0
+      if( activeEditColumn == "AlphaClock" ){
+         rowData.OmegaClock = null
+         milliseconds = $( "#alphaPopupHour" ).val() * 3600000 // 60*60*1000
+         if( milliseconds > 0 ){
+            newTime = rowData.AlphaClock.getTime() + milliseconds
+            rowData.OmegaClock = new Date( newTime )
+            //console.log( "   milliseconds:", milliseconds, "\n   newTime:", newTime,"\n   OmegaClock:", rowData.OmegaClock )
+         }
+      }
+
+      // It may be possible that a clock cell is forced as empty if the Enter key is hit when the prompt window is active
+      if( rowData.AlphaClock == "" ){
+         console.log( "updaterow: AlphaClock is empty:", rowData.AlphaClock )
+         return
+      }
+      if( rowData.OmegaClock == "" ){
+         console.log( "updaterow: OmegaClock is empty:", rowData.OmegaClock )
+         return
+      }
+
+      ajaxData  = "update="       + true
+      ajaxData += "&JobTag="      + rowData.JobTag
+      ajaxData += "&EmplID="      + rowData.EmplID
+      ajaxData += "&DisplayName=" + rowData.DisplayName
+      ajaxData += "&ProjectID="   + rowData.ProjectID
+      ajaxData += "&Project="     + rowData.Project
+      ajaxData += "&ChargeLine="  + rowData.ChargeLine
+      ajaxData += "&Task="        + rowData.Task
+
+      // Special handling of NULL for AlphaClock and OmegaClock
+      if( rowData.AlphaClock === null ){
+         ajaxData += "&AlphaClock=" + null
+      }else{
+         ajaxData += "&AlphaClock=" + moment( rowData.AlphaClock ).format( "YYYY-MM-DD HH:mm" )
+      }
+      if( rowData.OmegaClock === null ){
+         ajaxData += "&OmegaClock=" + null
+      }else{
+         ajaxData += "&OmegaClock=" + moment( rowData.OmegaClock ).format( "YYYY-MM-DD HH:mm" )
+      }
+
+      ajaxData += "&Notation=" + rowData.Notation
+      ajaxData += "&Closed="   + rowData.Closed
+      ajaxData += "&Enabled="  + rowData.Enabled
+      ajaxData += "&RecordID=" + rowData.RecordID
+      //ajaxData += "&hackAway=" + "true"
+      console.log( "update rowID:", rowID, "\nupdate row ajaxData:", ajaxData, "\nupdate rowData:" )
+      console.dir( rowData )
+//return
+      $.ajax({
+         dataType: "json",
+         url: "tcs.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+            /*
+               "refreshdata” Refreshes the already loaded data and re-renders the Grid
+               “refresh” Only repaints the view
+               "updatebounddata" Rebinds the Grid and re-renders it
+                  Pass "cells" to make a quick update of the cells. Refreshes only if new row count = previous row count
+                  Pass "filter" or "sort" if the update reason is a change in "filtering" or "sorting"
+                  Pass "data" to update only the data without the columns
+                  To make a full update, do not pass any parameter
+            */
+            $( "#appGrid" ).jqxGrid( "updatebounddata", "cells" )
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   }
+}
+gridAdapter = new $.jqx.dataAdapter( gridSource )
+console.dir( gridSource )
+
+// detailsBody variable is for the grid.rowdetailstemplate attribute
+detailsBody  = "<div style='margin: 10px 0px;'>" // This will be the rowDetailsArea.jqxPanel created below
+detailsBody += "   <div style='float: left; margin-top: 10px; margin-left: 10px;'>" // Div for top & left margin
+detailsBody += "      <div id='rowDetailsTable'></div>" // This will be the #rowDetailsTable".jqxDataTable created below
+detailsBody += "   </div>"
+detailsBody += "</div>"
+
+// Object variable to display the row'a detail area
+openDetails = function( index, parentElement, gridElement, dataRecord ){
+
+   //   Jerry
+   //   Do not show data from hidden columns
+
+   console.log( "row index:", index )
+   console.dir( "parentElement:"    )
+   console.dir(  parentElement      )
+   console.dir( "gridElement:"      )
+   console.dir(  gridElement        )
+   console.dir( "dataRecord:"       )
+   console.dir(  dataRecord         )
+
+   rowDetailsArea = $( $( parentElement ).children()[0] )
+   $( rowDetailsArea ).jqxPanel({
+      theme:  detailsTheme,
+      width:  gridWidth - 60,
+      height: detailsHeight - 20
+   })
+
+   row = {}
+   row["Column1"] = ""
+   row["Column2"] = ""
+   row["Column3"] = ""
+
+   renderData    = []
+   renderData[0] = row
+   renderSource = {
+      localData: renderData,
+      dataType: "array"
+   }
+
+   detailsAdapter = new $.jqx.dataAdapter( renderSource )
+   console.log( renderData )
+
+   $( "#rowDetailsTable" ).jqxDataTable({
+      theme:  detailsTheme,
+      source: detailsAdapter,
+      enableHover: false,      // Good for non-selection mode
+      selectionMode: "custom", // Disallows secting a row
+      columns: [
+         { text: "Street View",
+           align: "center",
+           dataField: "Column1",
+           width: 410,
+           cellsRenderer: function(){ // No need for the standard table details row passed parameters
+              return "<div><img width=400 height=200 src='../images/" + dataRecord.PhotoA + "'/></div>"
+           }
+         },
+         { text: "Map View",
+           align: "center",
+           dataField: "Column2",
+           width: 410,
+           cellsRenderer: function(){
+              return "<div><img width=400 height=200 src='../images/" + dataRecord.PhotoB + "'/></div>"
+           }
+         },
+         { text: "Details",
+           align: "center",
+           dataField: "Column3",
+           width: 480,
+           cellsRenderer: function(){
+              // Must not modify any dataRecord.value itself or the field in the grid gets messy.
+              if( dataRecord.Zip.length == 9 ){
+                 zipFormat = dataRecord.Zip.substr( 0, 5 ) + "-" + dataRecord.Zip.substr( 5, 4 )
+              }
+              sqFtFormat    = dataRecord.SqFt.toString().replace( /(\d)(?=(\d{3})+(?!\d))/g, "$1," )
+              enabledFormat = dataRecord.Enabled == 1 ? "Yes" : "No"
+              cszFormat     = dataRecord.City + ", " + dataRecord.State + " " + zipFormat
+
+              leftColumn  = "<div style='float: left; width: 50%;'>"
+              leftColumn += "<div style='margin: 10px;'><b>Building Code:</b> " + dataRecord.Building    + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Name:</b> "          + dataRecord.Name        + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Purpose:</b><br>"    + dataRecord.Description + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Address:</b><br>"    + dataRecord.Street + "<br>" + cszFormat + "</div>"
+              leftColumn += "</div>"
+
+              rightColumn  = "<div style='float: left; width: 50%;'>"
+              rightColumn += "<div style='margin: 10px;'><b>Sq Footage:</b> "  + sqFtFormat           + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Personnel:</b> "   + dataRecord.Personnel + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Parking:</b> "     + dataRecord.Parking   + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Street View:</b> " + dataRecord.PhotoA    + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Map View:</b> "    + dataRecord.PhotoB    + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Enabled:</b> "     + enabledFormat        + "</div>"
+              rightColumn += "</div>"
+
+              container  = "<div style='margin-left: 20px; width: 100%; height: 100%;'>"
+              container += leftColumn
+              container += rightColumn
+              container += "</div>"
+              return container
+           }
+         }
+      ]
+   })
+}
+
+// Object variable to render the grid's toolbar
+gridToolBar = function( toolbar ){
+   html  = "<div>"
+   html += "   <span style='margin-left: 8px; position: relative; top: -6px; font-size: large; font-weight: bold; color: rgb(0,191,255);'>Time Collection System</span>" // rgb(164,164,164)
+   html += "   <img style='margin-left: 496px; position: relative; margin-top: 8px;' src='../images/tfi_logo_24px.png'/>"
+   html += "</div>"
+   titleBlock = $( html )
+   titleContainer = $( "<div></div>" )
+   titleContainer.append( titleBlock )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/add.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>New Entry</span>"
+   html += "</div>"
+   addButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/goto.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Find Project</span>"
+   html += "</div>"
+   findButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/filter.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Clear filters</span>"
+   html += "</div>"
+   clearFilterButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/config.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Supervisor</span>"
+   html += "</div>"
+   supervisorButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/secret.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Password</span>"
+   html += "</div>"
+   passwordButton = $( html )
+
+/*
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/close.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Delete</span>"
+   html += "</div>"
+   deleteButton = $( html )
+*/
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/refresh.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Refresh</span>"
+   html += "</div>"
+   refreshButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/excel.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Excel</span>"
+   html += "</div>"
+   excelButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/print.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Print</span>"
+   html += "</div>"
+   printButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/stop.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Quit</span>"
+   html += "</div>"
+   quitButton = $( html )
+
+   buttonContainer = $( "<div style='margin-top: 4px;'></div>" )
+   buttonContainer.append( addButton )
+   buttonContainer.append( findButton )
+   buttonContainer.append( clearFilterButton )
+   buttonContainer.append( supervisorButton )
+   buttonContainer.append( passwordButton )
+// buttonContainer.append( deleteButton )
+   buttonContainer.append( refreshButton )
+   buttonContainer.append( excelButton )
+   buttonContainer.append( printButton )
+   buttonContainer.append( quitButton )
+
+   toolbar.append( titleContainer  )
+   toolbar.append( buttonContainer )
+
+   addButton.jqxButton({
+      theme:  gridTheme,
+      width:  90,
+      height: 18
+   })
+   addButton.click( function( event ){
+   window.open('employee1.html', 'employee', "height=250,width=250,screenX=50,left=50,screenY=50,top=50,status=yes,menubar=yes");
+			
+			window.open('Task1.html', 'task', "height=250,width=200,screenX=300,left=1050,screenY=10,top=20,status=yes,menubar=yes");
+			window.open('charge.html', 'Chargeline', "height=250,width=250,screenX=300,left=1050,screenY=50,top=400,status=yes,menubar=yes");
+			window.open('start.html', 'Time', "height=120,width=350,screenX=300,left=500,screenY=50,top=600,status=yes,menubar=yes");
+			window.open('popup.html', 'pop', "height=250,width=500,screenX=300,left=500,screenY=50,top=250,status=yes,menubar=yes");
+			window.open('projectd.html', 'project', "height=200,width=200,screenX=50,left=50,screenY=10,top=500,status=yes,menubar=yes");
+     // $( "#addPopup" ).jqxWindow( "open" )
+
+   })
+
+   findButton.jqxButton({
+      theme:  gridTheme,
+      width:  100,
+      height: 18
+   })
+   findButton.click( function( event ){
+      $( "#findPopup" ).jqxWindow( "open" )
+   })
+
+   clearFilterButton.jqxButton({
+      theme:  gridTheme,
+      width:  94,
+      height: 18
+   })
+   clearFilterButton.click( function(){
+      $( "#appGrid" ).jqxGrid( "clearfilters" )
+   })
+
+   supervisorButton.jqxButton({
+      theme:  gridTheme,
+      width:  94,
+      height: 18
+   })
+   supervisorButton.click( function(){
+      $( "#supervisorPopup" ).jqxWindow( "open" )
+   })
+
+   passwordButton.jqxButton({
+      theme:  gridTheme,
+      width:  82,
+      height: 18
+   })
+   passwordButton.click( function(){
+      $( "#changePasswordPopup" ).jqxWindow( "open" )
+   })
+
+/*//deleteButton
+//   deleteButton.jqxButton({
+//      theme:  gridTheme,
+//      width:  68,
+//      height: 18,
+//      disabled: false,
+//   })
+//   deleteButton.click( function( event ){
+//      // Get the Cell to display in the prompt window that will popup next.
+//      // Don't do anything if not clicked on a row somewhere.
+//      thisCell = $( "#appGrid" ).jqxGrid( "getselectedcell" )
+//      if( thisCell != null ){
+//         rowIndex = thisCell.rowindex
+//         json = $( "#appGrid" ).jqxGrid( "getrowdata", rowIndex ) // "getrowid" does not work as it strips all spaces from the source:id field "Cell"
+//         operation = json.Operation
+//         $( "#deleteValue" ).html( operation ) // Write to the <span>
+//         console.log( "datafield:", thisCell.datafield )
+//         console.log( "rowIndex:", rowIndex )
+//         console.log( "operation:", operation )
+//         $( "#deletePopup" ).jqxWindow( "open" ) // Popup the dialog
+//      }
+//   })
+*/
+
+   refreshButton.jqxButton({
+      theme:  gridTheme,
+      width:  68,
+      height: 18
+   })
+   refreshButton.click( function(){
+      // updatebounddata - 100% server-side redo.  Same as boot-up.
+      // refreshdata - Reloads grid only from the local-side data array.
+      // refresh - Repaints the screen.  Does not change any settings.
+      $( "#appGrid" ).jqxGrid( "updatebounddata" )
+      $( "#refreshPopup" ).jqxWindow( "open" )
+   })
+
+   excelButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18
+   })
+   excelButton.click( function(){
+      /*
+         Jerry
+         Find a way to stop the Excel popup warning: "file format and extension son't match ..."
+      */
+      // arg0 = exportdata attribute
+      // arg1 = Type of export
+      // arg2 = Filename
+      // arg3 = Include header. Default = true
+      // arg4 = Which rows. Default = "null" which = all
+      // arg5 = Hidden columns. Default = false
+      // arg6 = URL of export server when customizing. Optional
+      // arg7 = Optional character set
+      // $( "#appGrid" ).jqxGrid( "exportdata", "xls", "work_cell_data" ) // This one uses the exported on jQWidgets website.
+      $( "#appGrid" ).jqxGrid( "exportdata", "xls", "work_cell_data", true, null, false, "../apps/jqwidgets/jqwidgets/PHPExport/save-file.php" )
+   })
+
+   printButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18
+   })
+   printButton.click( function(){
+      /*
+         Jerry
+         Better print formatting. maybe adding "format attribute in the source "datafields"
+         Decimal places.
+         Why is this written the way it is.  "var" is required.  This is bad.
+         Need title.
+      */
+      gridHTML = $( "#appGrid" ).jqxGrid( "exportdata", "html" )
+      var printWindow = window.open( "", "", "width=900, height=500" ), document = printWindow.document.open()
+      pageHTML = "<!DOCTYPE html><html><head></head><body>" + gridHTML + "</body></html>"
+      document.write( pageHTML )
+      document.close()
+      printWindow.print()
+   })
+
+   quitButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18,
+   })
+   quitButton.click( function(){
+      $( "#quitPopup" ).jqxWindow( "open" )
+   })
+}
+
+// Make the grid
+$( "#appGrid" ).jqxGrid({
+   theme:          gridTheme,
+   width:          gridWidth,
+   height:         gridHeight,
+   autoheight:     true,////false, // If true this will move the grid's bottom up and down because of the different row heights.
+   autorowheight:  true,
+   columnsheight:  34,
+   altrows:        true,
+   pageable:       true,
+   pagermode:     "simple",
+   pagesize:       gridPageRows,
+   pagerbuttonscount: 10,
+   //pagesizeoptions: [ '10', '20', '30', '50', '70', '100' ], // not used on "simple" pagemode
+   //scrollmode: "logical", // cannot use this when pageable
+   sortable:       true,
+   filterable:     true,
+   filtermode:     "excel",
+   columnsresize:  false,
+   columnsreorder: false,
+   editable:       true,
+   selectionmode: "singlecell",
+   enablekeyboarddelete: false,
+   source:         gridAdapter,
+   showtoolbar:    true,
+   toolbarheight:  76,
+   rendertoolbar:  gridToolBar,
+   showstatusbar:  false,
+   rowdetails:     false,
+// initrowdetails: openDetails, // Function to call when expanding the row details and the details are going to be rendered.
+// rowdetailstemplate: {        // Contains the row detail HTML framework and the height
+//    rowdetails: detailsBody,
+//    rowdetailsheight: detailsHeight
+// },
+   ready: function(){
+      resetGridandBrowserWidth()
+   },
+   columns: [
+      { text: "Job Tag",
+        datafield: "JobTag",
+        width: 55,
+        align: "right",
+        cellsalign: "right",
+        cellsformat: "nnnnnnn", // Displays as 9,999,999
+        editable: hackAway,
+        hidden: hideColumn
+      },
+      { text: "EmplID",
+        datafield: "EmplID",
+        width: 45,
+        align: "center",
+        cellsalign:"center",
+        editable: hackAway,
+        hidden: hideColumn
+      },
+      { text: "Employee",
+        datafield: "EmployeeID", // Needed to be used in LB
+        displayfield: "DisplayName",
+        width: 135,
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#employeePopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Project ID",
+        datafield: "ProjectID",
+        width: 80,
+        editable: hackAway,
+        hidden: hideColumn
+      },
+      { text: "Project",
+        datafield: "ProjID",
+        displayfield: "Project",
+        width: 170,
+        editable: hackAway,
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#projectPopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Charge Line",
+        datafield: "ChargeLine",
+        width: 170,
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#chargeLinePopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Task",
+        datafield: "Task",
+        width: 160,
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#taskPopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Started",
+        datafield: "AlphaClock",
+        width: 115,
+        align: "center",
+        cellsalign: "center",
+        cellsformat: "MMM-dd-yyyy HH:mm",
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#alphaPopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Finished",
+        datafield: "OmegaClock",
+        width: 115,
+        align: "center",
+        cellsalign: "center",
+        cellsformat: "MMM-dd-yyyy HH:mm",
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           alpha = $( "#appGrid" ).jqxGrid( "getcellvalue", row, "AlphaClock" )
+           if( alpha === null ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#omegaPopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Minutes",
+        datafield: "Runtime",
+        width: 57,
+        align: "right",
+        cellsalign: "right",
+        cellsformat: "nnnnnnn", // Displays as 9,999,999
+        editable: false,
+        hidden: hideColumn
+      },
+      { text: "Time",
+        datafield: "DisplayTime",
+        width: 60,
+        align: "center",
+        cellsalign: "center",
+        editable: false
+      },
+      { text: "Notations",
+        datafield: "Notation",
+        width: 170,
+        cellbeginedit: function( row, dataField, columnType ){
+           if( $( "#appGrid" ).jqxGrid( "getcellvalue", row, "Closed" ) ) return false
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#notationPopup" ).jqxWindow( "open" )
+           return false
+        }
+      },
+      { text: "Closed",
+        datafield: "Closed",
+        width: 45,
+        align: "center",
+        columntype: "checkbox",
+        resizable: false,
+        editable: hackAway,
+        hidden: hideColumn
+      },
+      { text: "Enabled",
+        datafield: "Enabled",
+        width: 55,
+        align: "center",
+        columntype: "checkbox",
+        resizable: false,
+        editable: hackAway,
+        hidden: hideColumn
+      },
+      { text: "Modified",
+        datafield: "Modified",
+        width: 130,
+        align: "center",
+        cellsalign: "center",
+        cellsformat: "MMM-dd-yyyy HH:mm:ss",
+        editable: false,
+        hidden: hideColumn
+      },
+      { text: "Created",
+        datafield: "Created",
+        width: 130,
+        align: "center",
+        cellsalign: "center",
+        cellsformat: "MMM-dd-yyyy HH:mm:ss",
+        editable: false,
+        hidden: hideColumn
+      },
+      { text: "RecordID",
+        datafield: "RecordID",
+        width: 55,
+        align: "right",
+        cellsformat: "nnnnnnn", // Displays as 9,999,999
+        cellsalign: "right",
+        editable: false,
+        hidden: hideColumn
+      }
+   ]
+})
+$( "#appGrid" ).on( "columnresized", function(){
+   resetGridandBrowserWidth()
+})
+$( "#appGrid" ).on( "cellbeginedit", function( event ){ // Called after the column's cellbeginedit
+   /*
+   event.args        // Event arguments object
+   args.rowindex     // Row's bound index
+   args.visibleindex // Row's visible index
+   args.rightclick   // Right click true or false
+   args.columnindex  // Column index
+   args.datafield    // Column data field
+   args.value        // Cell's value
+   */
+   activeEditColumn = event.args.datafield
+})
+$( "#appGrid" ).on( "cellendedit", function( event ){
+   args = event.args
+   console.log( "cellendedit: Cell args:" )
+   console.dir( args )
+})
+
+// Make the "loginPopup" window and supporting elements
+$( "#loginPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 200,
+   autoOpen: false, // invisible
+   isModal: true,
+   modalOpacity: 0.5,
+   resizable: false,
+   okButton: $( "#loginPopupOK" ),
+   cancelButton: $( "#loginPopupCancel" )
+})
+$( "#loginPopup" ).on( "open", function( event ){
+   $( "#loginPopupDD" ).jqxDropDownList( "clearSelection" )
+   loginID = localStorage.getItem( "loginID" ) // Get the employee
+   console.log( "loginID:", loginID )
+   if( loginID != null ){
+      $( "#loginPopupDD" ).jqxDropDownList( "selectItem", loginID )
+   }
+   $x = $( "#loginPopupDD" ).jqxDropDownList( "getSelectedIndex" ) // Check if still a valid employee
+   console.log( "Index:", $x )
+   if( $x >= 0 ){ // Valid employee
+      $( "#loginPopupPassword" ).jqxPasswordInput({ disabled: false })
+   }
+})
+$( "#loginPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25,
+   disabled: true
+})
+$( "#loginPopupOK" ).on( "click", function(){
+   console.log( "OK clicked for loginID:", loginID )
+   gridSource.url = "tcs.php?LoginID=" + loginID + "&HackAway=" + hackAway // Change the data access to only this person
+   $( "#appGrid" ).jqxGrid( "updatebounddata" )
+})
+$( "#loginPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#loginPopupCancel" ).on( "click", function(){
+   $( "#quitPopupOK" ).click()
+})
+$( "#loginPopupDD" ).jqxDropDownList({
+   theme: detailsTheme,
+   autoOpen: false,
+   width: 207,
+   dropDownHeight: 100,
+   source: employeeAdapter,
+   displayMember: "DisplayName",
+   valueMember: "EmployeeID"
+})
+$( "#loginPopupDD" ).on( "select", function( ){     
+   var item = $( "#loginPopupDD" ).jqxDropDownList( "getSelectedItem" ) // Must use "var"
+   if( item ){
+      employeeID  = item.value
+      displayName = item.label
+
+      // Get the password for this employee
+      xmlhttp = new XMLHttpRequest()
+      xmlhttp.onreadystatechange = function(){
+         if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) password = xmlhttp.responseText
+      }
+      xmlhttp.open( "GET", "employeeLoginGet.php?LoginID=" + employeeID, false )
+      xmlhttp.send()
+
+      localStorage.setItem( "loginID", employeeID )
+      localStorage.setItem( "loginName", displayName )
+      localStorage.setItem( "loginPassword", password )
+      console.log( "employee:", employeeID + " " + displayName + " " + password )
+      $( "#loginPopupPassword" ).jqxPasswordInput({ disabled: false })
+   }
+})
+$( "#loginPopupPassword" ).jqxPasswordInput({
+   theme: detailsTheme,
+   maxLength: 16,
+   width:  120,
+   height: 20,
+   disabled: true
+})
+$( "#loginPopupPassword" ).keyup( function(){
+   if( $( "#loginPopupPassword" ).val() == localStorage.getItem( "loginPassword" ) ){
+      loginID = localStorage.getItem( "loginID" )
+      $( "#loginPopupOK" ).jqxButton({ disabled: false })
+      $( "#loginPopupOK" ).focus() // This throws an error when moving off the field when the console is open
+   }else{
+      $( "#loginPopupOK" ).jqxButton({ disabled: true })
+   }
+})
+
+// Make the "addPopup" window and supporting elements
+$( "#addPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  490,
+   height: 555,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#addPopupOK" ),
+   cancelButton: $( "#addPopupCancel" )
+})
+$( "#addPopup" ).on( "open", function( event ){
+   $( "#appGrid" ).jqxGrid( "clearselection" )
+   $( "#addPopupLB" ).jqxListBox( "clearSelection" )
+})
+$( "#addPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75
+})
+$( "#addPopupOK" ).on( "click", function(){
+   x = $( "#addPopupLB" ).jqxListBox( "getSelectedItem" )
+   if( x !== null ){
+      dataRow = {}
+      dataRow[ "ProjectID" ] = x.value
+      dataRow[ "Project"   ] = x.label
+      dataRow[ "ChargeLine" ] = "---"
+      $( "#appGrid" ).jqxGrid( "addrow", null, dataRow )
+   }
+})
+$( "#addPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#addPopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 457,
+   height: 450,
+   source: projectAdapter,
+   displayMember: "Project",
+   valueMember: "ProjID"
+})
+
+// Make the "findPopup" window and supporting elements
+$( "#findPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  490,
+   height: 555,
+   autoOpen: false, // invisible
+   showCloseButton: true,
+   isModal: true,
+   resizable: false,
+   okButton: $( "#findPopupOK" ),
+   cancelButton: $( "#findPopupCancel" )
+})
+$( "#findPopup" ).on( "open", function( event ){
+   $( "#appGrid" ).jqxGrid( "clearselection" )
+   $( "#findPopupLB" ).jqxListBox({
+      source: projectFindSource()
+   })
+})
+$( "#findPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: false
+})
+$( "#findPopupOK" ).on( "click", function(){
+   x = $( "#findPopupLB" ).jqxListBox( "getSelectedItem" )
+   if( x !== null ){
+      projectID = x.value
+      rows = $( "#appGrid" ).jqxGrid( "getrows" )
+      for( i = 0; i < rows.length; i++ ){
+         if( rows[i].ProjectID == projectID ){
+            $( "#appGrid" ).jqxGrid( "ensurerowvisible", i )
+            $( "#appGrid" ).jqxGrid( "selectcell", i, "ProjID" ) // "ProjID" because Project column is a value/label column
+            break
+         }
+      }
+   }
+})
+$( "#findPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#findPopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 457,
+   height: 450,
+   displayMember: "Project",
+   valueMember: "ProjectID"
+})
+
+/*// Make the "closeWOPopup" window and supporting elements
+$( "#closeWOPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  200,
+   height: 140,
+   autoOpen: false, // invisible
+   showCloseButton: true,
+   isModal: true,
+   resizable: false,
+   okButton: $( "#closeWOPopupOK" ),
+   cancelButton: $( "#closeWOPopupCancel" )
+})
+$( "#closeWOPopup" ).on( "open", function( event ){
+   $( "#closeWOPopupProject" ).val( "" ) // Empty the field
+})
+$( "#closeWOPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#closeWOPopupOK" ).on( "click", function(){
+   field = $( "#closeWOPopupProject" ).val()
+   rows = $( "#appGrid" ).jqxGrid( "getrows" )
+
+   // Get the JobTag
+   for( i = 0; i < rows.length; i++ ){
+      if( field == rows[i].WorkOrder ){
+         jobTag = rows[i].JobTag
+         break
+      }
+   }
+
+   // Determine if closeable
+   msg = ""
+   for( i = 0; i < rows.length; i++ ){
+      if( rows[i].JobTag != jobTag ) continue
+      if( rows[i].Employee == "" ) msg += "&nbsp;&nbsp;&nbsp;Employee<br>"
+      if( rows[i].PartNo == "" ) msg += "&nbsp;&nbsp;&nbsp;Part Number<br>"
+      if( rows[i].Operation == "" ) msg += "&nbsp;&nbsp;&nbsp;Operation<br>"
+      if( rows[i].CellID == "" ) msg += "&nbsp;&nbsp;&nbsp;Work Cell<br>"
+      if( rows[i].AlphaClock == null ) msg += "&nbsp;&nbsp;&nbsp;Started<br>"
+      if( rows[i].OmegaClock == null ) msg += "&nbsp;&nbsp;&nbsp;Finished<br>"
+      if( rows[i].ScrapCount > 0 && rows[i].ScrapReason == "" ) msg += "&nbsp;&nbsp;&nbsp;Scrap Reason<br>"
+      if( msg != "" ) break
+   }
+
+   // Not closeable
+   if( msg != "" ){
+      msg = "The following <strong>" + rows[i].WorkOrder + "</strong> work order fields are still empty:<br><br>" + msg
+      $( "#closeMsgPopupField" ).html( msg )
+      $( "#closeMsgPopup" ).jqxWindow( "open" )
+
+   // Closeable
+   }else{
+
+      // Go behind-the-scenes to set all records closed on this work order
+      xmlhttp = new XMLHttpRequest()
+      xmlhttp.onreadystatechange = function(){
+         if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
+            console.log( xmlhttp.responseText )
+            for( i = 0; i < rows.length; i++ ){
+               if( rows[i].JobTag == jobTag ){
+                  activeEditRow = i
+                  $( "#appGrid" ).jqxGrid( "ensurerowvisible", activeEditRow )
+                  $( "#appGrid" ).jqxGrid( "selectcell", activeEditRow, "Closed" )
+                  $( "#appGrid" ).jqxGrid( "updatebounddata", "cells" ) // Force a refresh without going to updaterow:
+                  break
+               }
+            }
+         }
+      }
+      xmlhttp.open( "GET", "closeWorkOrderBTS.php?JobTag=" + jobTag, false )
+      xmlhttp.send()
+   }
+})
+$( "#closeWOPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#closeWOPopupProject" ).jqxInput({
+   theme: detailsTheme,
+   maxLength: 11,
+   placeHolder: "Work Order",
+   width:  90,
+   height: 20
+})
+$( "#closeWOPopupProject" ).keyup( function( event ){
+   field = $( "#closeWOPopupProject" ).val().trim().toUpperCase()
+   if( field.search(/\d{7}-\d{3}/) == 0 ){ // Must be "9999999-999" ("SAMPLE" can only be closed from "Closed" field column)
+      found = false
+      rows = $( "#appGrid" ).jqxGrid( "getrows" )
+      for( i = 0; i < rows.length; i++ ){
+         if( rows[i].WorkOrder == field ){
+            found = true
+            break
+         }
+      }
+      if( found ){
+         $( "#closeWOPopupOK" ).jqxButton({ disabled: false })
+         if( event.which == 13 ) $( "#closeWOPopupOK" ).click() // Click "Goto" upon enter key
+      }else{
+         $( "#closeWOPopupOK" ).jqxButton({ disabled: true })
+      }
+   }else{
+      $( "#closeWOPopupOK" ).jqxButton({ disabled: true })
+   }
+})
+*/
+
+// Make the "supervisorPopup" window and supporting elements
+$( "#supervisorPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  255,
+   height: 340,
+   autoOpen: false, // invisible
+   showCloseButton: true,
+   isModal: true,
+   resizable: false,
+   okButton: $( "#supervisorPopupOK" ),
+   cancelButton: $( "#supervisorPopupCancel" )
+})
+$( "#supervisorPopup" ).on( "open", function( event ){
+   $( "#supervisorPopupPassword" ).val( "" )
+   $( "#supervisorPopupLB" ).jqxListBox( "uncheckAll" )
+   $( "#supervisorPopupLB" ).jqxListBox({ disabled: false }) // true
+   $( "#supervisorPopupOK" ).jqxButton({ disabled: false }) // true
+})
+$( "#supervisorPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#supervisorPopupOK" ).on( "click", function(){
+   itemList = $( "#supervisorPopupLB" ).jqxListBox( "getItems" )
+   //console.log( itemList )
+   for( i = 0; i < itemList.length; i++ ){
+      if( itemList[i].checked ){
+         switch( itemList[i].value ){
+         case "Edit employees database":
+            if( !employeeWindow || employeeWindow.closed ){
+               employeeWindow = window.open( "employee.html" )
+            }else{
+               employeeWindow.focus()
+            }
+            break
+         case "Edit projects database":
+            if( !projectWindow || projectWindow.closed ){
+               projectWindow = window.open( "project.html" )
+            }else{
+               projectWindow.focus()
+            }
+            break
+         case "Edit charge line database":
+            if( !chargeLineWindow || chargeLineWindow.closed ){
+               chargeLineWindow = window.open( "chargeLine.html" )
+            }else{
+               chargeLineWindow.focus()
+            }
+            break
+         case "Edit tasks database":
+            if( !taskWindow || taskWindow.closed ){
+               taskWindow = window.open( "task.html" )
+            }else{
+               taskWindow.focus()
+            }
+            break
+         }
+      }
+   }
+})
+$( "#supervisorPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#supervisorPopupPassword" ).jqxPasswordInput({
+   theme: detailsTheme,
+   maxLength: 12,
+   placeHolder: "password",
+   showPasswordIcon: false,
+   width:  120,
+   height: 20
+})
+$( "#supervisorPopupPassword" ).keyup( function( event ){
+   if( $( "#supervisorPopupPassword" ).val() == "" ){ // lovethistool
+      $( "#supervisorPopupPassword" ).val( "" )
+      $( "#supervisorPopupLB" ).jqxListBox({ disabled: false })
+      $( "#supervisorPopupLB" ).focus()
+      $( "#supervisorPopupOK" ).jqxButton({ disabled: false })
+   }else{
+      $( "#supervisorPopupLB" ).jqxListBox({ disabled: false }) // true
+      $( "#supervisorPopupOK" ).jqxButton({ disabled: false }) // true
+   }
+})
+$( "#supervisorPopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 220,
+   height: 140,
+   checkboxes: true,
+   source: supervisorSource,
+   disabled: true
+   //displayMember: "DisplayName",
+   //valueMember: "EmplID"
+})
+
+/*// Make the "deletePopup" window and supporting elements
+$( "#deletePopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 190,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#deletePopupOK" ),
+   cancelButton: $( "#deletePopupCancel" )
+})
+$( "#deletePopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#deletePopupOK" ).on( "click", function(){
+   thisCell = $( "#appGrid" ).jqxGrid( "getselectedcell" )
+   rowIndex = thisCell.Operation
+   json = $( "#appGrid" ).jqxGrid( "getrowdata", rowIndex )
+   id = json.RecordID
+   $( "#appGrid" ).jqxGrid( "deleterow", id )
+})
+$( "#deletePopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+*/
+
+// Make the "refreshPopup" window and supporting elements
+$( "#refreshPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 140,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#refreshPopupOK" )
+})
+$( "#refreshPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+
+// Make the "quitPopup" window and supporting elements
+$( "#quitPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 140,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#quitPopupOK" ),
+   cancelButton: $( "#quitPopupCancel" )
+})
+$( "#quitPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#quitPopupOK" ).on( "click", function(){
+   window.open( "", "_self", "" ) // Forces IE window.close without prompting
+   window.close()
+})
+$( "#quitPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+
+// Make the "alphaPopup" window and supporting elements
+$( "#alphaPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  280,
+   height: 270,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#alphaPopupOK" ),
+   cancelButton: $( "#alphaPopupCancel" )
+})
+$( "#alphaPopup" ).on( "open", function( event ){
+   // Set the popup window's project field
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "Project" )
+   $( "#alphaPopupField" ).html( x )
+   console.log( "alphaPopup open:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  Project:", x )
+
+   // Set the pop window's date field
+   cell = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   if( cell == null ){
+      x = moment().format( "YYYY MM DD HH mm ss" ).split( " " )
+   }else{
+      x = moment( cell ).format( "YYYY MM DD HH mm ss" ).split( " " )
+   }
+   x[1]-- // JavaScript months are zero-based   
+   $( "#alphaPopupDateTime" ).jqxDateTimeInput( "setDate", new Date( x[0], x[1], x[2], x[3], x[4], x[5] ) ) // year, month, day, hour, min, sec
+
+   // Set the pop window's hour field to zero
+   $( "#alphaPopupHour" ).val( 0 )
+
+})
+$( "#alphaPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   //template: "link",
+   width: 34,
+   height: 21
+})
+$( "#alphaPopupOK" ).on( "click", function(){
+   newValue = new Date()
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "#alphaPopupOK click:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue || $( "#alphaPopupHour" ).val() > 0 ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#alphaPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#alphaPopupSet" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#alphaPopupSet" ).on( "click", function(){
+   $( "#alphaPopup" ).jqxWindow( "close" )
+   newValue = $( "#alphaPopupDateTime" ).val( "date" )
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "#alphaPopupSet click:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#alphaPopupDateTime" ).jqxDateTimeInput({
+   /*
+   "d"-the day of the month
+   "dd"-the day of the month
+   "ddd"-the abbreviated name of the day of the week
+   "dddd"-the full name of the day of the week
+   "h"-the hour, using a 12-hour clock from 1 to 12
+   "hh"-the hour, using a 12-hour clock from 01 to 12
+   "H"-the hour, using a 24-hour clock from 0 to 23
+   "HH"-the hour, using a 24-hour clock from 00 to 23
+   "m"-the minute, from 0 through 59
+   "mm"-the minutes,from 00 though59
+   "M"-the month, from 1 through 12;
+   "MM"-the month, from 01 through 12
+   "MMM"-the abbreviated name of the month
+   "MMMM"-the full name of the month
+   "s"-the second, from 0 through 59
+   "ss"-the second, from 00 through 59
+   "t"-the first character of the AM/PM designator
+   "tt"-the AM/PM designator
+   "y"-the year, from 0 to 99
+   "yy"-the year, from 00 to 99
+   "yyy"-the year, with a minimum of three digits
+   "yyyy"-the year as a four-digit number
+   */
+   theme: detailsTheme,
+   width: 170,
+   height: 25,
+   showFooter: true,
+   formatString: "ddd MMM-dd-yyyy HH:mm",
+   showTimeButton: true
+})
+$( "#alphaPopupHour" ).jqxNumberInput({
+   theme: detailsTheme,
+   width: 60,
+   height: 25,
+   decimal: 0,
+   digits: 2,
+   decimalDigits: 2,
+   min: 0,
+   max: 24,
+   spinButtons: true,
+   spinButtonsStep: 5
+})
+
+// Make the "omegaPopup" window and supporting elements
+$( "#omegaPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  280,
+   height: 240,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#omegaPopupOK" ),
+   cancelButton: $( "#omegaPopupCancel" )
+})
+$( "#omegaPopup" ).on( "open", function( event ){
+   // Set the popup window's Project field
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "Project" )
+   $( "#omegaPopupField" ).html( x )
+   console.log( "omegaPopup open:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  Project:", x )
+
+   // Set the pop window's date field
+   cell = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   if( cell == null ){
+      x = moment().format( "YYYY MM DD HH mm ss" ).split( " " )
+   }else{
+      x = moment( cell ).format( "YYYY MM DD HH mm ss" ).split( " " )
+   }
+   x[1]-- // JavaScript months are zero-based   
+   $( "#omegaPopupDateTime" ).jqxDateTimeInput( "setDate", new Date( x[0], x[1], x[2], x[3], x[4], x[5] ) ) // year, month, day, hour, min, sec
+
+   // Set the minimum date
+   cell = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "AlphaClock" )
+   x = moment( cell ).format( "YYYY MM DD HH mm ss" ).split( " " )
+   x[1]-- // JavaScript months are zero-based   
+   $( "#omegaPopupDateTime" ).jqxDateTimeInput( { min: new Date( x[0], x[1], x[2], x[3], x[4], x[5] ) } ) // year, month, day, hour, min, sec
+})
+$( "#omegaPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   //template: "link",
+   width: 34,
+   height: 21
+})
+$( "#omegaPopupOK" ).on( "click", function(){
+   newValue = new Date()
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "#omegaPopupOK click:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#omegaPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#omegaPopupSet" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#omegaPopupSet" ).on( "click", function(){
+   $( "#omegaPopup" ).jqxWindow( "close" )
+   newValue = $( "#omegaPopupDateTime" ).val( "date" )
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "#omegaPopupSet click:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#omegaPopupDateTime" ).jqxDateTimeInput({
+   theme: detailsTheme,
+   width: 170,
+   height: 25,
+   showFooter: true,
+   formatString: "ddd MMM-dd-yyyy HH:mm",
+   showTimeButton: true
+})
+
+// Make the "employeePopup" window and supporting elements
+$( "#employeePopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 555,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#employeePopupOK" ),
+   cancelButton: $( "#employeePopupCancel" )
+})
+$( "#employeePopup" ).on( "open", function( event ){ // Find and check the ones already picked
+   // Note that the activeEditColumn here defaults to the value field in the value/label LB array
+   // Create an array of EmplIDs from the EmplID field to match against the value portion of the value/label LB array
+   emplID = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "EmplID" ).split( /,\s*/ ) // Array of emplIDs separated by ", "
+   itemList = $( "#employeePopupLB" ).jqxListBox( "getItems" ) // Get an object of value/label items from the listbox array
+   // console.log( "#employeePopup open:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  emplID:", emplID )
+   $( "#employeePopupLB" ).jqxListBox( "uncheckAll" )
+   for( j = 0; j < emplID.length; j++ ){ // Checkbox the ones already picked
+      for( i = 0; i < itemList.length; i++ ){
+         if( itemList[i].value === emplID[j] ){
+            $( "#employeePopupLB" ).jqxListBox( "checkIndex", i )
+         }
+      }
+   }
+})
+$( "#employeePopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75
+})
+$( "#employeePopupOK" ).on( "click", function(){
+   newValue = $( "#employeePopupLB" ).val().replace( /,/g, ", " ) // Add a space after each comma
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "EmplID" )
+   console.log( "#employeePopupOK click:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ){
+      $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, "EmplID", newValue )
+   }
+})
+$( "#employeePopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#employeePopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 207,
+   height: 450,
+   source: employeeAdapter,
+   checkboxes: true,
+   displayMember: "DisplayName",
+   valueMember: "EmployeeID"
+})
+
+// Make the "projectPopup" window and supporting elements
+$( "#projectPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  490,
+   height: 555,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#projectPopupOK" ),
+   cancelButton: $( "#projectPopupCancel" )
+})
+$( "#projectPopup" ).on( "open", function( event ){
+   // Initial boot does not set the pick, so do it each time.
+   projectID = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "ProjectID" )
+   itemList = $( "#projectPopupLB" ).jqxListBox( "getItems" )
+   for( i = 0; i < itemList.length; i++ ){
+      if( itemList[i].value === projectID ){
+         $( "#projectPopupLB" ).jqxListBox( { selectedIndex: i } )
+         break
+      }
+   }
+})
+$( "#projectPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75
+})
+$( "#projectPopupOK" ).on( "click", function(){
+   newValue = $( "#projectPopupLB" ).val().replace( /,/g, ", " ) // Add a space after each comma
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "ProjectID" )
+   if( newValue != oldValue ){
+      $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, "ProjectID", newValue )
+   }
+})
+$( "#projectPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#projectPopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 457,
+   height: 450,
+   source: projectAdapter,
+   displayMember: "Project",
+   valueMember: "ProjID"
+})
+
+// Make the "chargeLinePopup" window and supporting elements
+$( "#chargeLinePopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  475,
+   height: 555,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#chargeLinePopupOK" ),
+   cancelButton: $( "#chargeLinePopupCancel" )
+})
+$( "#chargeLinePopup" ).on( "open", function( event ){
+   projectID = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, "ProjectID" )
+   $( "#chargeLinePopupLB" ).jqxListBox({
+      source: chargeLineForProject( projectID )
+   })
+   if( $( "#chargeLinePopupLB" ).jqxListBox( "getItems" ).length == 0 ){ // Empty list
+      $( "#chargeLinePopupOK" ).jqxButton({ disabled: true })
+   }else{
+      $( "#chargeLinePopupOK" ).jqxButton({ disabled: false })
+      $( "#chargeLinePopupLB" ).jqxListBox( "clearSelection" ) 
+      x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+      $( "#chargeLinePopupLB" ).jqxListBox( "selectItem", x )
+   }
+})
+$( "#chargeLinePopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75,
+   disabled: false
+})
+$( "#chargeLinePopupOK" ).on( "click", function(){
+   newValue = $( "#chargeLinePopupLB" ).val()
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   // console.log( "chargeLinePopup Okay button:\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#chargeLinePopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#chargeLinePopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 440,
+   height: 450,
+   displayMember: "ChargeLine"
+})
+
+// Make the "taskPopup" window and supporting elements
+$( "#taskPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  225,
+   height: 510,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#taskPopupOK" ),
+   cancelButton: $( "#taskPopupCancel" )
+})
+$( "#taskPopup" ).on( "open", function( event ){
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   x = x.replace( /<br>/g, "\n" )
+   $( "#taskPopupField" ).html( x )
+   $( "#taskPopupLB" ).jqxListBox( "clearSelection" ) 
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   $( "#taskPopupLB" ).jqxListBox( "selectItem", x )
+})
+$( "#taskPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75
+})
+$( "#taskPopupOK" ).on( "click", function(){
+   newValue = $( "#taskPopupLB" ).val()
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "taskPopup Okay button:\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#taskPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#taskPopupLB" ).jqxListBox({
+   theme: detailsTheme,
+   width: 195,
+   height: 400,
+   source: taskAdapter,
+   displayMember: "Task"
+})
+
+// Make the "notationPopup" window and supporting elements
+$( "#notationPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  595,
+   height: 220,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#notationPopupOK" ),
+   cancelButton: $( "#notationPopupCancel" )
+})
+$( "#notationPopup" ).on( "open", function( event ){
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   x = x.replace( /<br>/g, "\n" )
+   $( "#notationPopupField" ).html( x )
+   console.log( "notationPopup open:\n  activeEditRow:", activeEditRow, "\n  activeEditColumn:", activeEditColumn, "\n  Operation:", x )
+})
+$( "#notationPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 75
+})
+$( "#notationPopupOK" ).on( "click", function(){
+   newValue = $( "#notationPopupField" ).val().replace( /\n/g, "<br>" )
+   oldValue = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   console.log( "notationPopup Okay button:\n  newValue:", newValue, "\n  oldValue:", oldValue )
+   if( newValue != oldValue ) $( "#appGrid" ).jqxGrid( "setcellvalue", activeEditRow, activeEditColumn, newValue )
+})
+$( "#notationPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#notationPopupField" ).jqxTextArea({
+   theme: detailsTheme,
+   width: 560,
+   height: 60,
+   maxLength: 1024
+})
+$( "#notationPopupField" ).keyup( function( event ){
+   field = $( "#notationPopupField" ).val().trim().toUpperCase()
+   if( field == "HACK" || field == "NOHACK" || field == "NO HACK" ){
+      $( "#notationPopup" ).jqxWindow( "close" )
+   }
+})
+$( "#notationPopupField" ).on( "change", function( event ){
+   field = $( "#notationPopupField" ).val().trim().toUpperCase()
+   if( field == "HACK" || field == "NOHACK" || field == "NO HACK" ){
+      hackAwayView( field )
+   }
+})
+
+// Make the "changePasswordPopup" window and supporting elements
+$( "#changePasswordPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  210,
+   height: 190,
+   autoOpen: false, // invisible
+   isModal: true,
+   modalOpacity: 0.5,
+   resizable: false,
+   okButton: $( "#changePasswordPopupOK" ),
+   cancelButton: $( "#changePasswordPopupCancel" )
+})
+$( "#changePasswordPopup" ).on( "open", function( event ){
+   $( "#changePasswordPopupCurrent" ).jqxPasswordInput({ disabled: false })
+   $( "#changePasswordPopupCurrent" ).val( "" )
+   setTimeout( function(){ $( "#changePasswordPopupCurrent" ).focus() }, 250 )
+
+   $( "#changePasswordPopupTitle" ).html( localStorage.getItem( "loginName" ) )
+   $( "#changePasswordPopupNew" ).val( "" )
+   $( "#changePasswordPopupConfirm" ).val( "" )
+
+   $( "#changePasswordPopupNew" ).jqxPasswordInput({ disabled: true })
+   $( "#changePasswordPopupConfirm" ).jqxPasswordInput({ disabled: true })
+   $( "#changePasswordPopupOK" ).jqxPasswordInput({ disabled: true })
+})
+$( "#changePasswordPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25,
+   disabled: true
+})
+$( "#changePasswordPopupOK" ).on( "click", function(){
+   password = $( "#changePasswordPopupNew" ).val()
+   console.log( "Change password:", password )
+
+   xmlhttp = new XMLHttpRequest()
+   xmlhttp.onreadystatechange = function(){
+      if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ) result = xmlhttp.responseText
+   }
+   xmlhttp.open( "GET", "employeeLoginSet.php?LoginID=" + loginID + "&Password=" + password, false )
+   xmlhttp.send()
+
+   localStorage.setItem( "loginPassword", password )
+})
+$( "#changePasswordPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   height: 25
+})
+$( "#changePasswordPopupCurrent" ).jqxPasswordInput({
+   theme: detailsTheme,
+   maxLength: 16,
+   width:  120,
+   height: 20,
+   disabled: false
+})
+$( "#changePasswordPopupCurrent" ).keyup( function(){
+   $( "#changePasswordPopupNew" ).val( "" )
+   $( "#changePasswordPopupConfirm" ).val( "" )
+   $( "#changePasswordPopupConfirm" ).jqxPasswordInput({ disabled: true })
+
+   if( $( "#changePasswordPopupCurrent" ).val() == localStorage.getItem( "loginPassword" ) ){
+      $( "#changePasswordPopupNew" ).jqxPasswordInput({ disabled: false })
+      $( "#changePasswordPopupNew" ).focus()
+      $( "#changePasswordPopupCurrent" ).jqxPasswordInput({ disabled: true })
+   }else{
+      $( "#changePasswordPopupNew" ).jqxPasswordInput({ disabled: true })
+   }
+})
+$( "#changePasswordPopupNew" ).jqxPasswordInput({
+   theme: detailsTheme,
+   maxLength: 16,
+   width:  120,
+   height: 20,
+   disabled: true
+})
+$( "#changePasswordPopupNew" ).keyup( function( event ){
+   $( "#changePasswordPopupConfirm" ).val( "" )
+   $( "#changePasswordPopupConfirm" ).jqxPasswordInput({ disabled: true })
+   $( "#changePasswordPopupOK" ).jqxButton({ disabled: true })
+
+   if( event.which == 32 ){
+      x = $( "#changePasswordPopupNew" ).val().trim()
+      $( "#changePasswordPopupNew" ).val( x )
+   }else{
+      x = $( "#changePasswordPopupNew" ).val()
+      if( x.length >= 8 && x != localStorage.getItem( "loginPassword" ) ){
+         $( "#changePasswordPopupConfirm" ).jqxPasswordInput({ disabled: false })
+      }
+   }
+})
+$( "#changePasswordPopupConfirm" ).jqxPasswordInput({
+   theme: detailsTheme,
+   maxLength: 16,
+   width:  120,
+   height: 20,
+   disabled: true
+})
+$( "#changePasswordPopupConfirm" ).keyup( function(){
+   if( $( "#changePasswordPopupConfirm" ).val() == $( "#changePasswordPopupNew" ).val() ){
+      $( "#changePasswordPopupOK" ).jqxButton({ disabled: false })
+   }else{
+      $( "#changePasswordPopupOK" ).jqxButton({ disabled: true })
+   }
+})
+
+/* // Make the "closeMsgPopup" window and supporting elements
+$( "#closeMsgPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  260,
+   height: 250,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#closeMsgPopupOK" )
+})
+$( "#closeMsgPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+*/
+
+function login(){
+   $( "#loginPopup" ).jqxWindow( "open" )
+}
+function hackAwayView( field ){
+   hackAway   = field == "HACK" ? true  : false
+   hideColumn = field == "HACK" ? false : true
+   loginID    = field == "HACK" ? ""    : localStorage.getItem( "loginID" ) // Show all records if hacking
+
+   // Set the editable fields
+   fields = [
+      "JobTag",
+      "EmplID",
+      "ProjectID",
+      "Project",
+      "Closed",
+      "Enabled"
+   ]
+   for( i = 0; i < fields.length; i++ ){
+      $( "#appGrid" ).jqxGrid( "setcolumnproperty", fields[i], "editable", hackAway )
+   }
+
+   // Set the hidden fields
+   fields = [
+      "JobTag",
+      "EmplID",
+      "ProjectID",
+      "Runtime",
+      "Closed",
+      "Enabled",
+      "Modified",
+      "Created",
+      "RecordID"
+   ]
+   for( i = 0; i < fields.length; i++ ){
+      $( "#appGrid" ).jqxGrid( "setcolumnproperty", fields[i], "hidden", hideColumn )
+   }
+   resetGridandBrowserWidth()
+
+   // Reset showable records
+   console.log( "hackAwayView:", loginID )
+   gridSource.url = "tcs.php?LoginID=" + loginID + "&HackAway=" + hackAway // Change the data access to only this person
+   $( "#appGrid" ).jqxGrid( "updatebounddata" )
+}
+function finish(){
+   if( employeeWindow && !employeeWindow.closed ) employeeWindow.close()
+   if( projectWindow  && !projectWindow.closed  ) projectWindow.close()
+   if( chargeLineWindow  && !chargeLineWindow.closed  ) chargeLineWindow.close()
+   if( taskWindow     && !taskWindow.closed     ) taskWindow.close()
+}
+function getColumnsWidth(){
+   fields = [
+      "JobTag",
+      "EmplID",
+      "DisplayName", // Uses the EmployeeID key field for LB
+      "ProjectID",
+      "Project",
+      "ChargeLine",
+      "Task",
+      "AlphaClock",
+      "OmegaClock",
+      "Runtime",
+      "DisplayTime",
+      "Notation",
+      "Closed",
+      "Enabled",
+      "Modified",
+      "Created",
+      "RecordID"
+   ]
+   columnsWidth = 0
+   for( i = 0; i < fields.length; i++ ){
+      if( !$( "#appGrid" ).jqxGrid( "getcolumnproperty", fields[i], "hidden" ) ){
+         columnsWidth += $( "#appGrid" ).jqxGrid( "getcolumnproperty", fields[i], "width" )
+      }
+   }
+   console.log( "columnsWidth:", columnsWidth )
+}
+function resetGridandBrowserWidth(){
+   getColumnsWidth()
+   scrollBarWidth = $( "#appGrid" ).jqxGrid( "scrollbarsize" )
+   scrollBarWidth = scrollBarWidth > 0 ? scrollBarWidth + 5 : 0 // Think we need to add a little for some reason
+   gridWidth = detailsBarWidth + columnsWidth + scrollBarWidth
+   browserWidth = gridWidth + 50 // Add extra to avoid horizontal scrollbar
+   $( "#appGrid" ).jqxGrid( { width: gridWidth } )
+   setBrowserSize( browserWidth, browserHeight )
+   console.log( "scrollBarWidth:", scrollBarWidth, "\ndetailsBarWidth:", detailsBarWidth, "\ngridWidth:", gridWidth, "\nbrowserWidth:", browserWidth )
+}
+function setBrowserSize( windowWidth, windowHeight ){
+   xPos = ( screen.width  / 2 ) - ( windowWidth  / 2 )
+   yPos = ( screen.height / 2 ) - ( windowHeight / 2 )
+   window.resizeTo( windowWidth, windowHeight )
+   //sleep( 500 )
+   //window.moveTo( xPos, yPos )
+}
+function displayInformation(){
+   /*
+   Important to note:  The pixel sizes and mouse locations returned by various properties is correct only if the browser's
+   zoom level is set at 100%.  Anything other than that returns a ratio.  For example:  If the screen resolution is set for
+   1920 x 1200 and the browser's zoom level is set for 100% then the pixel size returned by window.width = 1920 (same as the
+   resolution).  However, if the browser's zoom level is set for 125% then it will return 1536.
+   Meaning:  100% zoom / 125% zoom = .8 and 1536 pixels / 1920 pixels = .8
+   */
+   console.log( "Results of jqWidgets' response command ..." )
+   console.log( "OS: " + os.name + " " + os.version )
+   console.log( "Platform: " + os.platform )
+   console.log( "Browser: " + browser.name + " " + browser.version + ", Access name: " + browser.accessName )
+   console.log( "Device Type: " + device.type )
+   console.log( "Device Width: " + device.width + ", Height: " + device.height )
+   console.log( "Device AvailWidth: " + device.availWidth + ", AvailHeight: " + device.availHeight )
+   console.log( "Supports Touch Events: " + device.touch + ",  VML: " + browser.vml + ",  SVG: " + browser.svg + ",  Canvas: " + browser.canvas )
+   console.log( "Viewport Width: " + viewPort.width + ", Height: " + viewPort.height )
+   console.log( "Document Width: " + documentInfo.width + ", Height: " + documentInfo.height )
+   console.log( "Scroll: " + scroll.left + ", top: " + scroll.top )
+
+   console.log( "gridTheme:",       gridTheme       )
+   console.log( "detailsTheme:",    detailsTheme    )
+   console.log( "browserWidth:",    browserWidth    )
+   console.log( "browserHeight:",   browserHeight   )
+   console.log( "gridWidth:",       gridWidth       )
+   console.log( "gridPageRows:",    gridPageRows    )
+   console.log( "gridHeight:",      gridHeight      )
+   console.log( "detailsHeight:",   detailsHeight   )
+   console.log( "detailsBarWidth:", detailsBarWidth )
+   console.log( "columnsWidth:",    columnsWidth    )
+}
+function mouseInformation(){
+   // Event is a "touchstart" or "mousedown" event.
+   response.pointerDown( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Down: " + position.left + ", " + position.top + ", Type: " + pointerType )
+   })
+
+   // Event is a "touchend" or "mouseup" event.
+   response.pointerUp( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Up: " + position.left + ", " + position.top + ", Type: " + pointerType )
+   })
+
+   // Event is a "touchmove" or "mousemove" event.
+   response.pointerMove( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Move: " + position.left + ", " + position.top + ", Type: " + pointerType )
+      if( device.touch ){ // Stops the default action of the event.
+         event.preventDefault()
+         return false
+      }
+   })
+}
+function sleep( ms ){
+   start = new Date().getTime()
+   for( i = 0; i < 1e7; i++ ){
+      if( ( new Date().getTime() - start ) > ms ){
+         break
+      }
+   }
+}
+</script>
+</body>
+</html>

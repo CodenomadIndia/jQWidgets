@@ -1,0 +1,22 @@
+#allItems {
+    background: #3b3b3b none repeat scroll 0 0;
+    padding: 0;
+}
+
+#allItems li:nth-child(2n+1) {
+    background: #616161 none repeat scroll 0 0;
+    border-bottom: 2px solid #959595;
+    border-top: 2px solid #959595;
+    color: #fff;
+}
+#allItems li {
+    font-family: arial;
+    font-size: 14px;
+    line-height: 27px;
+    list-style: outside none none;
+    padding: 0;
+    text-transform: uppercase;
+}
+#allItems li:nth-child(2n) {
+    color: #f7f7f7;
+}

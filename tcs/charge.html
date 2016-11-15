@@ -1,0 +1,52 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<script>
+$.ajax({
+						url: 'charge1.php',
+						type: 'POST',
+						datatype : 'json',
+						data: {  },
+						success: function (data, status, xhr) {
+							var JSONObject = JSON.parse(data);
+							 
+							var div="";
+						for(var i=0;i<JSONObject.length;i++)
+						{							
+							div +='<li draggable="true" ondragstart="myfunc(event,\''+JSONObject[i]["ChargeLine"]+',charge\')">'+JSONObject[i]["ChargeLine"]+'</li>'; 
+						}
+						
+						//alert(div);
+						$('#allItems').html(div);
+						}
+					});
+</script>
+ <ul id="allItems">
+ 
+			
+		</ul>
+
+<script>
+function drop(ev, target) {
+    ev.preventDefault();
+    console.log(target.id, ev.target.id);
+    console.log(ev.dataTransfer);
+
+    var data = ev.dataTransfer.getData("text");
+	alert(data);
+	
+   
+}
+function myfunc(event,b)
+{
+
+event.dataTransfer.setData('text', b);
+
+
+}
+
+
+</script>
+</html>

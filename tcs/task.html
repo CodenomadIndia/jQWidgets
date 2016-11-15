@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<head>
+
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.base.css"        rel="stylesheet"/>
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.ui-darkness.css" rel="stylesheet"/>
+<link href="../apps/jqwidgets/jqwidgets/styles/jqx.ui-sunny.css"    rel="stylesheet"/>
+
+<style>
+body{
+   background-color: rgb( 24, 24, 24 );
+   margin: 5px;
+}
+.jqx-grid-column-header-ui-darkness{
+   color: yellow;
+}
+.jqx-grid-column-header-ui-sunny{
+   color: yellow;
+}
+</style>
+
+<script src="../jquery-2.1.3.min.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcore.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxbuttons.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcheckbox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxcombobox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdata.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdata.export.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdatatable.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxdropdownlist.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.edit.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.export.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.filter.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.grouping.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.pager.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsresize.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.columnsreorder.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.edit.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.selection.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxgrid.sort.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxlistbox.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxmaskedinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxmenu.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxnavigationbar.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxnumberinput.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxpanel.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxresponse.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxribbon.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxscrollbar.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxtabs.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/jqxwindow.js"></script>
+<script src="../apps/jqwidgets/jqwidgets/aggregates.js"></script>
+</head>
+<body>
+
+<!--
+********************************************************************************************************
+****************  Framework  ****************  Framework  ****************  Framework  *****************
+********************************************************************************************************
+-->
+
+<div id="appGrid"></div>
+
+<div id="addPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Add a new task</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 0px 10px;"><strong>New Task:</strong></div>
+      <div style="margin: 5px 10px 25px 10px;">
+         <input id="addPopupField">
+      </div>
+      <div style="margin: 20px 0px 0px 61px;">
+         <input id="addPopupOK" type="button" value="Add" style="margin-right: 10px">
+         <input id="addPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<div id="taskPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Edit task</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 0px 10px;"><strong>Edit Task:</strong></div>
+      <div style="margin: 5px 10px 25px 10px;">
+         <input id="taskPopupField">
+      </div>
+      <div style="margin: 20px 0px 0px 61px;">
+         <input id="taskPopupOK" type="button" value="Accept" style="margin-right: 10px">
+         <input id="taskPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+
+<!--
+<div id="deletePopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Delete this record</span>
+   </div>
+   <div>
+      <div style="margin: 10px 10px 25px 10px;">
+         Clicking the <strong>Delete</strong> button will remove this <span id="deleteValue" style="color: blue; font-weight: bold;"></span> record ONLY if not referenced elsewhere. Click <strong>Cancel</strong> to abort this attempt.
+      </div>
+      <div style="margin-left: 44px;">
+         <input id="deletePopupOK" type="button" value="Delete" style="margin-right: 10px">
+         <input id="deletePopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+-->
+
+<div id="refreshPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Refresh the grid</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 25px 10px;">
+         The data has now been refreshed. Please click<span style="font-weight: bold;">&nbsp;OK&nbsp;</span>to continue.
+      </div>
+      <div style="margin-left: 84px;">
+         <input id="refreshPopupOK" type="button" value="OK" style="margin-right: 5px">
+      </div>
+   </div>
+</div>
+
+<div id="quitPopup">
+   <div><!-- Header -->
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Close window</span>
+   </div>
+   <div><!-- Content -->
+      <div style="margin: 10px 10px 25px 10px;">
+         Please click<span style="font-weight: bold;">&nbsp;Quit&nbsp;</span>to close this window, or click<span style="font-weight: bold;">&nbsp;Go Back&nbsp;</span>to leave it open.
+      </div>
+      <div style="margin-left: 44px;">
+         <input id="quitPopupOK" type="button" value="Quit" style="margin-right: 10px">
+         <input id="quitPopupCancel" type="button" value="Go Back">
+      </div>
+   </div>
+</div>
+
+<!-- 
+<div id="operationPopup">
+   <div>
+      <img style="position: relative; margin-top: 0px;" src="../images/info.png" alt="">
+      <span style="margin-left: 4px; position: relative; top: -3px;">Select an operation</span>
+   </div>
+   <div>
+      <div id="operationPopupLB" style="margin: 10px 10px 0px 10px;"></div>
+      <div style="margin: 20px 0px 0px 21px;">
+         <input id="operationPopupOK" type="button" value="Okay" style="margin-right: 10px">
+         <input id="operationPopupCancel" type="button" value="Cancel">
+      </div>
+   </div>
+</div>
+-->
+
+<!--
+********************************************************************************************************
+*****************  Script  *******************  Script  *******************  Script  *******************
+********************************************************************************************************
+-->
+
+<script>
+
+userID = "jweinpert"
+window.name = "taskWindow"
+browserWidth  = 440 // Meaningless here. Will be resized
+browserHeight = 720 // Sets the height here
+//setBrowserSize( browserWidth, browserHeight )
+//sleep( 250 )
+
+activeEditRow    = -1 // Global var so various functions know which row is being edited
+activeEditColumn = "" // Global var so various functions know which column is being edited
+
+response     = new $.jqx.response() // Object to hold display size and mouse info for development.
+os           = response.os
+browser      = response.browser
+device       = response.device
+viewPort     = response.viewPort
+documentInfo = response.document
+scroll       = response.scroll
+
+gridTheme       = "ui-darkness"
+detailsTheme    = "ui-sunny"
+gridWidth       = viewPort.width-2 // was browserWidth - 35
+gridPageRows    = 20
+gridHeight      = viewPort.height-2 // was 240 + ( 25 * gridPageRows )
+detailsHeight   = 290 // Detail row height
+detailsBarWidth = 0 //34
+columnsWidth    = 0   // Calculated after grid is rendered or any column is resized
+//displayInformation() // Show display size info.
+//mouseInformation() // Show mouse info.
+
+/* // Test the returned JSON array
+xmlhttp = new XMLHttpRequest()
+xmlhttp.onreadystatechange = function(){
+   if( xmlhttp.readyState == 4 && xmlhttp.status == 200 ){
+      alert( xmlhttp.responseText )
+      console.log( xmlhttp.responseText )
+   }
+}
+xmlhttp.open( "GET", "employee.php", false )
+xmlhttp.send()
+*/
+
+// gridSource and gridAdapter objects
+// are variables for the main jqxGrid
+gridSource = {
+   datatype:  "json",
+   datafields: [
+      // name: = json array index key
+      // type: = "string", "date", "number", or "bool". Needed for best results when exporting to excel
+      { name: "Task", type: "string" }
+   ],
+   id:   "Task",
+   url:  "task.php",
+   cache: false,
+   async: false,
+   addrow: function( rowID, insertData, position, commit ){
+      console.log( "insertData:", insertData )
+      ajaxData  = "insert=" + true
+      ajaxData += "&"
+      ajaxData += $.param( insertData ) // insertData = '{EmplID: "xyz", DisplayName: "xyz"}'
+      console.log( "addrow:\n  rowID:", rowID, "\n  ajaxData:", ajaxData )
+//return
+      $.ajax({
+         dataType: "json",
+         url: "task.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+
+            $( "#appGrid" ).jqxGrid( "updatebounddata" ) // Reload the data because of the added row
+            rows = $( "#appGrid" ).jqxGrid( "getrows" )
+            for( i = 0; i < rows.length; i++ ){
+               if( rows[i].Task == insertData.Task ){
+                  $( "#appGrid" ).jqxGrid( "ensurerowvisible", i )
+                  $( "#appGrid" ).jqxGrid( "selectcell", i, "Task" )
+                  break
+               }
+            }
+            if( window.opener !== undefined ){
+               window.opener.$( "#taskPopupLB" ).jqxListBox({ source: window.opener.taskAdapter })
+            }
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   },
+   deleterow: function( rowID, commit ){
+      ajaxData  = "delete=" + true
+      ajaxData += "&"
+      ajaxData += $.param( { EmplID: rowID } )
+      console.log( "delete row ajaxData:", ajaxData )
+
+      // Save EmplID and DisplayName to be added back into the employee dropdown list
+      json = $( "#appGrid" ).jqxGrid( "getrowdatabyid", rowID )
+      emplID   = json.EmplID
+      employee = json.DisplayName
+return
+      $.ajax({
+         dataType: "json",
+         url: "task.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+
+            // Add employee back into the employee dropdown list
+            // Insert it alphabetically if possible
+            var items = $( "#employeePopupLB" ).jqxListBox( "getItems" ) // Must use "var"
+            for( var i = 0; i < items.length; i++ ){
+               if( i == items.length - 1 ){
+                  $( "#employeePopupLB" ).jqxListBox( "addItem", { label: employee, value: emplID } )
+                  break
+               }else if( items[i].label > employee ){
+                  $( "#employeePopupLB" ).jqxListBox( "insertAt", { label: employee, value: emplID }, i )
+                  break
+               }
+            }
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   },
+   updaterow: function( rowID, rowData, commit ){ // rowData is a json array like {Cell: "Covers", Building: "Plant1", ...}
+      ajaxData  = "update=" + true
+      ajaxData += "&NewTask="  + rowData.NewTask
+      ajaxData += "&OldTask="  + rowID
+      console.log( "updaterow:\n  activeEditColumn:", activeEditColumn, "\n  rowID:", rowID, "\n  ajaxData:", ajaxData, "\n  rowData:" )
+      console.dir( rowData )
+//return
+      $.ajax({
+         dataType: "json",
+         url: "task.php",
+         data: ajaxData,
+         async: false,
+         cache: false,
+         success: function( answer, status, xhr ){
+            commit( true )
+            console.log( "status:", status, "\nanswer:" )
+            console.dir( answer )
+
+            $( "#appGrid" ).jqxGrid( "updatebounddata", "cells" )
+            if( window.opener !== undefined ){
+               window.opener.$( "#taskPopupLB" ).jqxListBox({ source: window.opener.taskAdapter })
+               window.opener.$( "#appGrid" ).jqxGrid( "updatebounddata", "cells" )
+            }
+         },
+         error: function( xhr, status, error ){
+            commit( false )
+            console.log( "status:", status, "\nerror:", error, "\nxhr:" )
+            console.dir( xhr )
+         }
+      })
+   }
+}
+gridAdapter = new $.jqx.dataAdapter( gridSource )
+
+// detailsBody variable is for the grid.rowdetailstemplate attribute
+detailsBody  = "<div style='margin: 10px 0px;'>" // This will be the rowDetailsArea.jqxPanel created below
+detailsBody += "   <div style='float: left; margin-top: 10px; margin-left: 10px;'>" // Div for top & left margin
+detailsBody += "      <div id='rowDetailsTable'></div>" // This will be the #rowDetailsTable".jqxDataTable created below
+detailsBody += "   </div>"
+detailsBody += "</div>"
+
+// Object variable to display the row'a detail area
+openDetails = function( index, parentElement, gridElement, dataRecord ){
+
+   //   Jerry
+   //   Do not show data from hidden columns
+
+   console.log( "row index:", index )
+   console.dir( "parentElement:"    )
+   console.dir(  parentElement      )
+   console.dir( "gridElement:"      )
+   console.dir(  gridElement        )
+   console.dir( "dataRecord:"       )
+   console.dir(  dataRecord         )
+
+   rowDetailsArea = $( $( parentElement ).children()[0] )
+   $( rowDetailsArea ).jqxPanel({
+      theme:  detailsTheme,
+      width:  gridWidth - 60,
+      height: detailsHeight - 20
+   })
+
+   row = {}
+   row["Column1"] = ""
+   row["Column2"] = ""
+   row["Column3"] = ""
+
+   renderData    = []
+   renderData[0] = row
+   renderSource = {
+      localData: renderData,
+      dataType: "array"
+   }
+
+   detailsAdapter = new $.jqx.dataAdapter( renderSource )
+   console.log( renderData )
+
+   $( "#rowDetailsTable" ).jqxDataTable({
+      theme:  detailsTheme,
+      source: detailsAdapter,
+      enableHover: false,      // Good for non-selection mode
+      selectionMode: "custom", // Disallows secting a row
+      columns: [
+         { text: "Street View",
+           align: "center",
+           dataField: "Column1",
+           width: 410,
+           cellsRenderer: function(){ // No need for the standard table details row passed parameters
+              return "<div><img width=400 height=200 src='../images/" + dataRecord.PhotoA + "'/></div>"
+           }
+         },
+         { text: "Map View",
+           align: "center",
+           dataField: "Column2",
+           width: 410,
+           cellsRenderer: function(){
+              return "<div><img width=400 height=200 src='../images/" + dataRecord.PhotoB + "'/></div>"
+           }
+         },
+         { text: "Details",
+           align: "center",
+           dataField: "Column3",
+           width: 480,
+           cellsRenderer: function(){
+              // Must not modify any dataRecord.value itself or the field in the grid gets messy.
+              if( dataRecord.Zip.length == 9 ){
+                 zipFormat = dataRecord.Zip.substr( 0, 5 ) + "-" + dataRecord.Zip.substr( 5, 4 )
+              }
+              sqFtFormat    = dataRecord.SqFt.toString().replace( /(\d)(?=(\d{3})+(?!\d))/g, "$1," )
+              enabledFormat = dataRecord.Enabled == 1 ? "Yes" : "No"
+              cszFormat     = dataRecord.City + ", " + dataRecord.State + " " + zipFormat
+
+              leftColumn  = "<div style='float: left; width: 50%;'>"
+              leftColumn += "<div style='margin: 10px;'><b>Building Code:</b> " + dataRecord.Building    + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Name:</b> "          + dataRecord.Name        + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Purpose:</b><br>"    + dataRecord.Description + "</div>"
+              leftColumn += "<div style='margin: 10px;'><b>Address:</b><br>"    + dataRecord.Street + "<br>" + cszFormat + "</div>"
+              leftColumn += "</div>"
+
+              rightColumn  = "<div style='float: left; width: 50%;'>"
+              rightColumn += "<div style='margin: 10px;'><b>Sq Footage:</b> "  + sqFtFormat           + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Personnel:</b> "   + dataRecord.Personnel + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Parking:</b> "     + dataRecord.Parking   + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Street View:</b> " + dataRecord.PhotoA    + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Map View:</b> "    + dataRecord.PhotoB    + "</div>"
+              rightColumn += "<div style='margin: 10px;'><b>Enabled:</b> "     + enabledFormat        + "</div>"
+              rightColumn += "</div>"
+
+              container  = "<div style='margin-left: 20px; width: 100%; height: 100%;'>"
+              container += leftColumn
+              container += rightColumn
+              container += "</div>"
+              return container
+           }
+         }
+      ]
+   })
+}
+
+// Object variable to render the grid's toolbar
+gridToolBar = function( toolbar ){
+   html  = "<div>"
+   html += "   <span style='margin-left: 8px; position: relative; top: -6px; font-size: large; font-weight: bold; color: rgb(0,191,255);'>TCS Tasks</span>" // rgb(164,164,164)
+   html += "   <img style='margin-left: 136px; position: relative; margin-top: 8px;' src='../images/tfi_logo_24px.png'/>"
+   html += "</div>"
+   titleBlock = $( html )
+   titleContainer = $( "<div></div>" )
+   titleContainer.append( titleBlock )
+
+   html  = "<div style='float: left; margin-left: 8px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/add.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>New</span>"
+   html += "</div>"
+   addButton = $( html )
+/*
+   html  = "<div style='float: left; margin-left: 5px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/close.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Delete</span>"
+   html += "</div>"
+   deleteButton = $( html )
+*/
+   html  = "<div style='float: left; margin-left: 5px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/refresh.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Refresh</span>"
+   html += "</div>"
+   refreshButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 5px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/excel.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Excel</span>"
+   html += "</div>"
+   excelButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 5px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/print.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Print</span>"
+   html += "</div>"
+   printButton = $( html )
+
+   html  = "<div style='float: left; margin-left: 5px;'>"
+   html += "   <img style='position: relative; margin-top: 1px;' src='../images/stop.png'/>"
+   html += "   <span style='margin-left: 4px; position: relative; top: -3px;'>Quit</span>"
+   html += "</div>"
+   quitButton = $( html )
+
+   buttonContainer = $( "<div style='margin-top: 4px;'></div>" )
+   buttonContainer.append( addButton     )
+// buttonContainer.append( deleteButton  )
+   buttonContainer.append( refreshButton )
+   buttonContainer.append( excelButton   )
+   buttonContainer.append( printButton   )
+   buttonContainer.append( quitButton    )
+
+   toolbar.append( titleContainer  )
+   toolbar.append( buttonContainer )
+
+   addButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18
+   })
+   addButton.click( function( event ){
+      $( "#addPopup" ).jqxWindow( "open" )
+   })
+/*
+   deleteButton.jqxButton({
+      theme:  gridTheme,
+      width:  68,
+      height: 18,
+      disabled: false
+   })
+   deleteButton.click( function( event ){
+      // Get the Cell to display in the prompt window that will popup next.
+      // Don't do anything if not clicked on a row somewhere.
+      thisCell = $( "#appGrid" ).jqxGrid( "getselectedcell" )
+      if( thisCell != null ){
+         rowIndex = thisCell.rowindex
+         json = $( "#appGrid" ).jqxGrid( "getrowdata", rowIndex ) // "getrowid" does not work as it strips all spaces from the source:id field "Cell"
+         employee = json.DisplayName
+         $( "#deleteValue" ).html( employee  ) // Write to the <span>
+         console.log( "datafield:", thisCell.datafield )
+         console.log( "rowIndex:", rowIndex )
+         console.log( "employee:", employee )
+         $( "#deletePopup" ).jqxWindow( "open" ) // Popup the dialog
+      }
+   })
+*/
+   refreshButton.jqxButton({
+      theme:  gridTheme,
+      width:  68,
+      height: 18
+   })
+   refreshButton.click( function(){
+      // updatebounddata - 100% server-side redo.  Same as boot-up.
+      // refreshdata - Reloads grid only from the local-side data array.
+      // refresh - Repaints the screen.  Does not change any settings.
+      $( "#appGrid" ).jqxGrid( "updatebounddata" )
+      $( "#refreshPopup" ).jqxWindow( "open" )
+   })
+
+   excelButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18
+   })
+   excelButton.click( function(){
+      /*
+         Jerry
+         Find a way to stop the Excel popup warning: "file format and extension son't match ..."
+      */
+      // arg0 = exportdata attribute
+      // arg1 = Type of export
+      // arg2 = Filename
+      // arg3 = Include header. Default = true
+      // arg4 = Which rows. Default = "null" which = all
+      // arg5 = Hidden columns. Default = false
+      // arg6 = URL of export server when customizing. Optional
+      // arg7 = Optional character set
+      // $( "#appGrid" ).jqxGrid( "exportdata", "xls", "work_cell_data" ) // This one uses the exported on jQWidgets website.
+      $( "#appGrid" ).jqxGrid( "exportdata", "xls", "work_cell_data", true, null, false, "../apps/jqwidgets/jqwidgets/PHPExport/save-file.php" )
+   })
+
+   printButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18
+   })
+   printButton.click( function(){
+      /*
+         Jerry
+         Better print formatting. maybe adding "format attribute in the source "datafields"
+         Decimal places.
+         Why is this written the way it is.  "var" is required.  This is bad.
+         Need title.
+      */
+      gridHTML = $( "#appGrid" ).jqxGrid( "exportdata", "html" )
+      var printWindow = window.open( "", "", "width=900, height=500" ), document = printWindow.document.open()
+      pageHTML = "<!DOCTYPE html><html><head></head><body>" + gridHTML + "</body></html>"
+      document.write( pageHTML )
+      document.close()
+      printWindow.print()
+   })
+
+   quitButton.jqxButton({
+      theme:  gridTheme,
+      width:  62,
+      height: 18,
+   })
+   quitButton.click( function(){
+      $( "#quitPopup" ).jqxWindow( "open" )
+   })
+}
+
+// Make the grid
+$( "#appGrid" ).jqxGrid({
+   theme:          gridTheme,
+   width:          gridWidth,
+   height:         gridHeight,
+   autoheight:     true, // If true this will move the grid's bottom up and down becuase of the different row heights.
+   autorowheight:  true,
+   columnsheight:  34, // Header height make same as toolbar height
+   altrows:        true,
+   pageable:       true,
+   ////pagerbuttonscount: 10,
+   pagermode:     "simple",
+   pagesize:       gridPageRows,
+   sortable:       true,
+   filterable:     true,
+   filtermode:     "excel",
+   columnsresize:  false,
+   columnsreorder: false,
+   editable:       true,
+   selectionmode: "singlecell",
+   enablekeyboarddelete: false,
+   source:         gridAdapter,
+   showtoolbar:    true,
+   toolbarheight:  76,
+   rendertoolbar:  gridToolBar,
+   showstatusbar:  false,
+   rowdetails:     false,
+// initrowdetails: openDetails, // Function to call when expanding the row details and the details are going to be rendered.
+// rowdetailstemplate: {        // Contains the row detail HTML framework and the height
+//    rowdetails: detailsBody,
+//    rowdetailsheight: detailsHeight
+// },
+   ready: function(){
+      resetGridandBrowserWidth()
+   },
+   columns: [
+      { text: "Task",
+        datafield: "Task",
+        width: 160,
+        editable: true,
+        cellbeginedit: function( row, dataField, columnType ){
+           activeEditRow = row
+           activeEditColumn = dataField
+           $( "#taskPopup" ).jqxWindow( "open" )
+           return false
+        }
+      }
+   ]
+})
+$( "#appGrid" ).on( "columnresized", function(){
+   resetGridandBrowserWidth()
+})
+$( "#appGrid" ).on( "cellbeginedit", function( event ){ // Called after the column's cellbeginedit
+   /*
+   event.args        // Event arguments object
+   args.rowindex     // Row's bound index
+   args.visibleindex // Row's visible index
+   args.rightclick   // Right click true or false
+   args.columnindex  // Column index
+   args.datafield    // Column data field
+   args.value        // Cell's value
+   */
+   activeEditColumn = event.args.datafield
+})
+$( "#appGrid" ).on( "cellendedit", function( event ){
+   args = event.args
+   console.log( "cellendedit: Cell args:" )
+   console.dir( args )
+})
+
+// Make the "addPopup" window and supporting elements
+$( "#addPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  275,
+   height: 160,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#addPopupOK" ),
+   cancelButton: $( "#addPopupCancel" )
+})
+$( "#addPopup" ).on( "open", function( event ){
+   $( "#addPopupField" ).val( "" )
+})
+$( "#addPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#addPopupOK" ).on( "click", function(){
+   dataRow = {}
+   dataRow[ "Task" ] = $( "#addPopupField"  ).val().trim()
+   $( "#appGrid" ).jqxGrid( "addrow", null, dataRow )
+})
+$( "#addPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#addPopupField" ).jqxInput({
+   theme: detailsTheme,
+   maxLength: 32,
+   placeHolder: "Unique task",
+   width:  240,
+   height: 20
+})
+$( "#addPopupField" ).keyup( function(){ // Set status of addPopupOK button
+   field = $( "#addPopupField"  ).val().trim()
+   if(  field == "" ){
+      $( "#addPopupOK" ).jqxButton({ disabled: true })
+   }else{
+      dup = false
+      rows = $( "#appGrid" ).jqxGrid( "getrows" )
+      for( i = 0; i < rows.length; i++ ){
+         if( field.toLowerCase() == rows[i].Task.toLowerCase() ){
+            dup = true
+            break
+         }
+      }
+      if( dup ){
+         $( "#addPopupOK" ).jqxButton({ disabled: true })
+      }else{
+         $( "#addPopupOK" ).jqxButton({ disabled: false })
+      }
+   }
+})
+
+// Make the "taskPopup" window and supporting elements
+$( "#taskPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  275,
+   height: 160,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#taskPopupOK" ),
+   cancelButton: $( "#taskPopupCancel" )
+})
+$( "#taskPopup" ).on( "open", function( event ){
+   x = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   $( "#taskPopupField" ).val( x )
+})
+$( "#taskPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#taskPopupOK" ).on( "click", function(){
+   rowID = $( "#appGrid" ).jqxGrid( "getcellvalue", activeEditRow, activeEditColumn )
+   dataRow = {}
+   dataRow[ "NewTask" ] = $( "#taskPopupField"  ).val().trim()
+   if( dataRow[ "NewTask" ] != rowID ) $( "#appGrid" ).jqxGrid( "updaterow", rowID, dataRow )
+})
+$( "#taskPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#taskPopupField" ).jqxInput({
+   theme: detailsTheme,
+   maxLength: 32,
+   //placeHolder: "Unique task",
+   width:  240,
+   height: 20
+})
+$( "#taskPopupField" ).keyup( function(){ // Set status of taskPopupOK button
+   field = $( "#taskPopupField"  ).val().trim()
+   if(  field == "" ){
+      $( "#taskPopupOK" ).jqxButton({ disabled: true })
+   }else{
+      dup = false
+      rows = $( "#appGrid" ).jqxGrid( "getrows" )
+      for( i = 0; i < rows.length; i++ ){
+         if( field.toLowerCase() == rows[i].Task.toLowerCase() ){
+            dup = true
+            break
+         }
+      }
+      if( dup ){
+         $( "#taskPopupOK" ).jqxButton({ disabled: true })
+      }else{
+         $( "#taskPopupOK" ).jqxButton({ disabled: false })
+      }
+   }
+})
+
+/*// Make the "deletePopup" window and supporting elements
+$( "#deletePopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 190,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#deletePopupOK" ),
+   cancelButton: $( "#deletePopupCancel" )
+})
+$( "#deletePopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65,
+   disabled: true
+})
+$( "#deletePopupOK" ).on( "click", function(){
+   thisCell = $( "#appGrid" ).jqxGrid( "getselectedcell" )
+   rowIndex = thisCell.rowindex
+   json = $( "#appGrid" ).jqxGrid( "getrowdata", rowIndex ) // "getrowid" does not work as it strips all spaces from the source:id field "Cell"
+   id = json.EmplID
+   $( "#appGrid" ).jqxGrid( "deleterow", id )
+})
+$( "#deletePopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+*/
+
+// Make the "refreshPopup" window and supporting elements 
+$( "#refreshPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 140,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#refreshPopupOK" )
+})
+$( "#refreshPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+
+// Make the "quitPopup" window and supporting elements
+$( "#quitPopup" ).jqxWindow({
+   theme: detailsTheme,
+   width:  240,
+   height: 140,
+   autoOpen: false, // invisible
+   isModal: true,
+   resizable: false,
+   okButton: $( "#quitPopupOK" ),
+   cancelButton: $( "#quitPopupCancel" )
+})
+$( "#quitPopupOK" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+$( "#quitPopupOK" ).on( "click", function(){
+   $( "#refreshPopup" ).jqxWindow( "destroy" )
+   $( "#quitPopup"   ).jqxWindow( "destroy" )
+   $( "#appGrid"      ).jqxGrid(   "destroy" )
+   window.open( "", "_self", "" ) // Forces IE window.close without prompting
+   window.close()
+})
+$( "#quitPopupCancel" ).jqxButton({
+   theme: detailsTheme,
+   width: 65
+})
+
+function getColumnsWidth(){
+   fields = [
+      "Task"
+   ]
+   columnsWidth = 210
+   for( i = 0; i < fields.length; i++ ){
+      if( !$( "#appGrid" ).jqxGrid( "getcolumnproperty", fields[i], "hidden" ) ){
+         columnsWidth += $( "#appGrid" ).jqxGrid( "getcolumnproperty", fields[i], "width" )
+      }
+   }
+   console.log( "columnsWidth:", columnsWidth )
+}
+function resetGridandBrowserWidth(){
+   getColumnsWidth()
+   scrollBarWidth = $( "#appGrid" ).jqxGrid( "scrollbarsize" )
+   scrollBarWidth = scrollBarWidth > 0 ? scrollBarWidth + 5 : 0 // Think we need to add a little for some reason
+   gridWidth = detailsBarWidth + columnsWidth + scrollBarWidth
+   browserWidth = gridWidth + 50 // Add extra to avoid horizontal scrollbar
+   $( "#appGrid" ).jqxGrid( { width: gridWidth } )
+   setBrowserSize( browserWidth, browserHeight )
+   console.log( "scrollBarWidth:", scrollBarWidth, "\ndetailsBarWidth:", detailsBarWidth, "\ngridWidth:", gridWidth, "\nbrowserWidth:", browserWidth )
+}
+function setBrowserSize( windowWidth, windowHeight ){
+   xPos = ( screen.width  / 2 ) - ( windowWidth  / 2 )
+   yPos = ( screen.height / 2 ) - ( windowHeight / 2 )
+   window.resizeTo( windowWidth, windowHeight )
+   //sleep( 500 )
+   //window.moveTo( xPos, yPos )
+}
+function displayInformation(){
+   /*
+   Important to note:  The pixel sizes and mouse locations returned by various properties is correct only if the browser's
+   zoom level is set at 100%.  Anything other than that returns a ratio.  For example:  If the screen resolution is set for
+   1920 x 1200 and the browser's zoom level is set for 100% then the pixel size returned by window.width = 1920 (same as the
+   resolution).  However, if the browser's zoom level is set for 125% then it will return 1536.
+   Meaning:  100% zoom / 125% zoom = .8 and 1536 pixels / 1920 pixels = .8
+   */
+   console.log( "Results of jqWidgets' response command ..." )
+   console.log( "OS: " + os.name + " " + os.version )
+   console.log( "Platform: " + os.platform )
+   console.log( "Browser: " + browser.name + " " + browser.version + ", Access name: " + browser.accessName )
+   console.log( "Device Type: " + device.type )
+   console.log( "Device Width: " + device.width + ", Height: " + device.height )
+   console.log( "Device AvailWidth: " + device.availWidth + ", AvailHeight: " + device.availHeight )
+   console.log( "Supports Touch Events: " + device.touch + ",  VML: " + browser.vml + ",  SVG: " + browser.svg + ",  Canvas: " + browser.canvas )
+   console.log( "Viewport Width: " + viewPort.width + ", Height: " + viewPort.height )
+   console.log( "Document Width: " + documentInfo.width + ", Height: " + documentInfo.height )
+   console.log( "Scroll: " + scroll.left + ", top: " + scroll.top )
+
+   console.log( "gridTheme:",       gridTheme       )
+   console.log( "detailsTheme:",    detailsTheme    )
+   console.log( "browserWidth:",    browserWidth    )
+   console.log( "browserHeight:",   browserHeight   )
+   console.log( "gridWidth:",       gridWidth       )
+   console.log( "gridPageRows:",    gridPageRows    )
+   console.log( "gridHeight:",      gridHeight      )
+   console.log( "detailsHeight:",   detailsHeight   )
+   console.log( "detailsBarWidth:", detailsBarWidth )
+   console.log( "columnsWidth:",    columnsWidth    )
+}
+function mouseInformation(){
+   // Event is a "touchstart" or "mousedown" event.
+   response.pointerDown( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Down: " + position.left + ", " + position.top + ", Type: " + pointerType )
+   })
+
+   // Event is a "touchend" or "mouseup" event.
+   response.pointerUp( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Up: " + position.left + ", " + position.top + ", Type: " + pointerType )
+   })
+
+   // Event is a "touchmove" or "mousemove" event.
+   response.pointerMove( $( document ), function( event, position, pointerType ){
+      console.log( "Pointer Move: " + position.left + ", " + position.top + ", Type: " + pointerType )
+      if( device.touch ){ // Stops the default action of the event.
+         event.preventDefault()
+         return false
+      }
+   })
+}
+function sleep( ms ){
+   start = new Date().getTime()
+   for( i = 0; i < 1e7; i++ ){
+      if( ( new Date().getTime() - start ) > ms ){
+         break
+      }
+   }
+}
+</script>
+</body>
+</html>
